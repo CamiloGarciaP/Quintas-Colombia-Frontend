@@ -7,12 +7,18 @@ import { Component } from '@angular/core';
 })
 export class Counter {
     //Atributos de clase
-    counter = 0;
+    private counter: number = 0;
+
+    get value(): number {
+        return this.counter;
+    }
     //Metodos de clase
-    increment(){
+    increment(): void{
         this.counter++;
     }
-    decrement(){
-        this.counter--;
+    decrement(): void{
+        if (this.counter > 0){
+            this.counter--;
+        }
     }
 }

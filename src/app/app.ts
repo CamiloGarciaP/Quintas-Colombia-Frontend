@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
 import { Header } from './features/shared/layout/header/header';
 import { Footer } from './features/shared/layout/footer/footer';
-import { Home } from "./features/pages/home/home";
+import { Home } from './features/pages/home/home';
 import { Login } from './features/pages/login/login';
 import { Register } from "./features/pages/register/register";
 import { Error } from './features/pages/error/error';

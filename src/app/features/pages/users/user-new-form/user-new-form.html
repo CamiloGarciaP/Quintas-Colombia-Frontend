@@ -1,3 +1,56 @@
-<form>
-    []
+<form
+[formGroup]="formData"
+(ngSubmit)="onSubmit()"
+>
+    <h1>Crear Nuevo Usuario</h1>
+
+    <div class="field">
+        <label for="fullName">fullName</label>
+        <input type="text" id="fullName" formControlName="fullName" />
+    </div>
+    
+    <div class="field">
+        <label for="username">username</label>
+        <input type="text" id="username" formControlName="username" />
+    </div>
+    
+    <div class="field">
+        <label for="email">email</label>
+        <input type="text" id="email" formControlName="email" />
+    </div>
+
+    <div class="field">
+        <label for="password">password</label>
+        <input type="text" id="password" formControlName="password" />
+    </div>
+
+    <div class="field">
+        <label for="phone">phone</label>
+        <input type="text" id="phone" formControlName="phone" />
+    </div>
+
+    <div class="field">
+        <label for="role">role</label>
+        <select id="role" formControlName="role">
+            <option value="Cliente">Cliente</option>
+            <option value="Propietario">Propietario</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label for="status">Status</label>
+
+        <input type="radio" id="active" formControlName="isActive" [value]="true" />
+        <label for="active">Active</label>
+        <input type="radio" id="inactive" formControlName="isActive" [value]="false" />
+        <label for="inactive">Inactive</label>
+    </div>
+    <div class="field buttons">
+        <button type="submit">Crear Usuario</button>
+        <button type="button">Clear</button>
+</div>
+
+
+
 </form>

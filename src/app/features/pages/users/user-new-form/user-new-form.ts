@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-//TODO Preguntar al profe como crear el Core/Services para usuarios.
-// import { HttpUsers } from 'src/app/core/services/http/users/http-users.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { HttpUsers } from '../../../../core/services/http-users';
+
 
 @Component({
   selector: 'app-user-new-form',
@@ -11,6 +11,31 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class UserNewForm {
   formData!: FormGroup;
-  //TODO Hasta no tener el core/services/http/users no se puede inyectar el servicio.
-  // constructor( private http: HttpUsers ) {}
+  constructor(private httpUsers: HttpUsers) {
+  //Definie la estructura del formulario
+    this.formData = new FormGroup({
+      fullName: new FormControl(''),
+      username: new FormControl(''),
+      email: new FormControl(''),
+      password: new FormControl(''),
+      phone: new FormControl(''),
+      role: new FormControl('Cliente'),
+      isActive: new FormControl(true),
+    });
+  }
+  onSubmit() {
+  console.log(this.formData.value);
+  this.httpUsers.createUser(this.formData.value).subscribe({
+    next: (data) => {
+      console.log('Usuario creado exitosamente', data);
+    },
+    error: (error) => {
+      console.error('Error, usuario no creado', error);
+    },
+    complete: () => {
+      console.log('Solicitud de creación de usuario completada');
+    }
+  });
 }
+}
+

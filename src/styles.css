@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+}

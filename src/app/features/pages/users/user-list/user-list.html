@@ -1,4 +1,35 @@
-<pre>
-    {{users$ | async}}
-</pre>
-<h2>HTML Table</h2>
+<h2>Lista de Usuarios</h2>
+
+<table border="1" cellPadding="6">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @for (user of users$ | async; track $index){
+            <tr>
+                <td>{{user.fullName}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.phone}}</td>
+                <td>{{user.role}}</td>
+                <td>
+                    {{user.isActive ? 'Activo' : 'Inactivo'}}
+                </td>
+                <td>
+                    <a [routerLink]="['/dashboard', 'user', 'edit', user._id]">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

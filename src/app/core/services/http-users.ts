@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +17,17 @@ export class HttpUsers {
   createUser(userData: any): Observable<any> {
     return this.http.post<any>(`${this.base_url}/${this.slug}`, userData);
   }
-  getUser(): Observable<any> {
-    return this.http.get<any>(`${this.base_url}/${this.slug}/${this.slugUserList}`)
+  getUsers(): Observable<any[]> {
+    return this.http
+    .get<any>(`${this.base_url}/${this.slug}`)
+    .pipe(
+      map(response => response.data)
+    );
   }
+  updateUser(id: string, data: any): Observable<any> {
+    return this.http.patch<any>(`${this.base_url}/${this.slug}/${id}`, data);
+  }
+
+
 
 } 

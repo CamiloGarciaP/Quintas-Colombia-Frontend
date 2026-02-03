@@ -1,1 +1,23 @@
-<p>user-edit-form works!</p>
+<h2>Editar Usuario</h2>
+
+<form [formGroup]="formData" (ngSubmit)="onSubmit()">
+
+    <input type="text" formControlName="fullName" placeholder="Nombre completo">
+    <input type="text" formControlName="username" placeholder="Usuario">
+    <input type="email" formControlName="email" placeholder="Email">
+    <input type="text" formControlName="phone" placeholder="Teléfono">
+
+    <select formControlName="role">
+        <option value="Admin">Admin</option>
+        <option value="Cliente">Cliente</option>
+    </select>
+
+    <label>
+        <input type="radio" [value]="true" formControlName="isActive"> Activo
+    </label>
+    <label>
+        <input type="radio" [value]="false" formControlName="isActive"> Inactivo
+    </label>
+
+    <button type="submit">Guardar cambios</button>
+</form>

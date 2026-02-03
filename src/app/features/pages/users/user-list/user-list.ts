@@ -1,25 +1,24 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Observable} from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { HttpUsers } from '../../../../core/services/http-users';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-user-list',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, RouterLink],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
-export class UserList {
-  public users$: Observable<any[]> = new Observable<any[]>();
+export class UserList implements OnInit {
 
-  constructor ( private httpClient: HttpClient ) {}
+  public users$!: Observable<any[]>;
 
-  // Usamos el Hook de ciclo de vida que avisa que se esta iniciando el componente
-  // ngOnInit(){
-  //   this.users$ = this.httpClient.getUser()
-  // }
+  constructor ( 
+    private httpUser: HttpUsers
+  ) {}
 
-
-
-
+  ngOnInit(): void {
+    this.users$ = this.httpUser.getUsers();
+  }
 }

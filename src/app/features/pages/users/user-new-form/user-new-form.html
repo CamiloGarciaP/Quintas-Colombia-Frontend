@@ -1,3 +1,9 @@
+@if (serverError) {
+    <p style="color: red;">
+        {{ serverError }}
+    </p>
+}
+
 <form [formGroup]="formData" (ngSubmit)="onSubmit()">
     <div class="container-form">
 

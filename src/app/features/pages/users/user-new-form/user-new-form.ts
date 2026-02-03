@@ -13,7 +13,9 @@ import { Router } from '@angular/router';
 })
 export class UserNewForm {
   formData!: FormGroup;
-  registerSubscirbed!: Subscription
+  registerSubscirbed!: Subscription;
+  
+  serverError: string | null = null; 
 
 
   constructor(
@@ -59,15 +61,16 @@ export class UserNewForm {
     if(this.formData.valid){
       console.log(this.formData.value);
       this.httpUsers.createUser(this.formData.value).subscribe({
-        next: (data) => {
-          console.log('Usuario creado exitosamente', data);
+        next: (response) => {
+          console.log(response.msg)
+          console.log('Usuario', response.data);
           this.formData.reset(); //Resetea el formulario
           //Aquí se redirige a otra página
           //TODO Revisar la ruta de UserList
           this.router.navigateByUrl('/dashboard/user/edit/:id')
         },
         error: (error) => {
-          console.error(error);
+          this.serverError = error.error.msg;
         },
         complete: () => {
           this.formData.markAllAsTouched();//Marca todos los campos como tocados (sirve para limpiar el formulario)

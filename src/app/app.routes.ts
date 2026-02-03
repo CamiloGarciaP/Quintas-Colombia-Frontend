@@ -12,7 +12,7 @@ export const routes: Routes = [
     { path:'login', component:Login },
     { path: 'register', component:Register },
     { path: '404', component:Error },
-    { path: 'dashboard/users', component: UserList},
+    { path: 'dashboard/user/list', component: UserList},
     { path: 'dashboard/user/new', component: UserNewForm },
     { path: 'dashboard/user/edit/:id',component: UserEditForm},
     { path: '', redirectTo: 'home', pathMatch: 'full'},

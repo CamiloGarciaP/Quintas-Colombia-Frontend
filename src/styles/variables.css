@@ -1,0 +1,15 @@
+:root {
+    /* Tipografías */
+    --font-primary: "Oranienbaum", serif;
+    --font-secondary: "Poppins", sans-serif;
+
+    /* Convierte 1rem en base 10px */
+    --font-base: 62.5%;
+
+    /* Colores base */
+    --white: #ffffff;
+    --black: #000000;
+    --gold: #d4af37;
+    --gray: #555555;
+    --dark-jungle: #1b1d24;
+}

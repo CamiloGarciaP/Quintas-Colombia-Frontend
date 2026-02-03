@@ -1,15 +1,30 @@
-<div class="formulario">
-    <ul>
-        <li>
-            <a routerLink="/dashboard/user/list" routerLinkActive="active-link">
-                Users
-            </a>
-        </li>
+<header class="header">
+    <div class="top-header">
 
-        <li>
-            <a routerLink="/dashboard/user/new" routerLinkActive="active-link">
-                User new
-            </a>
-        </li>
-    </ul>
-</div>
+        <!-- Logo de Quintas Colombia -->
+        <div class="logo-qc">
+            <img src="assets/images/logo-QC-transparente.png" alt="Quintas Colombia">
+        </div>
+
+        <!-- Menú de navegación -->
+        <nav class="menu">
+            <ul class="list">
+                <li>
+                    <a routerLink="/" routerLinkActive="active">Inicio</a>
+                </li>
+                <li>
+                    <a routerLink="/properties" routerLinkActive="active">Propiedades</a>
+                </li>
+                <li>
+                    <a routerLink="/contact" routerLinkActive="active">Contacto</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Login -->
+        <div class="right">
+            <a routerLink="/login" class="btn-login">Login</a>
+        </div>
+
+    </div>
+</header>

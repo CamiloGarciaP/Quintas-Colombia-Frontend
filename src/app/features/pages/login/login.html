@@ -1,1 +1,20 @@
-<p>login works!</p>
+
+<div class="page page-login" >
+    <h1>Login</h1>
+    <form class="form form-login" 
+    [formGroup]="formData"
+    (ngSubmit)="onSubmit()">
+        <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email" required>
+        </div>
+        <div class="field">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" formControlName="password" required>
+        </div>
+        <div class="field buttons">
+            <button type="submit" class="boton">Login</button>
+            <button (click)="onReset()" type="button" class="boton">Cancelar</button>
+        </div>
+    </form>
+</div>

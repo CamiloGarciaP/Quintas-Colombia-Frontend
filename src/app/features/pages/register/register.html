@@ -1,1 +1,77 @@
-<p>register works!</p>
+@if (serverError) {
+    <p style="color: red;">
+        {{ serverError }}
+    </p>
+}
+
+<form [formGroup]="formData" (ngSubmit)="onSubmit()">
+    <div class="container-form">
+
+        <div class="title">
+            <h1>Crear Nuevo Usuario</h1>
+        </div>
+
+        <div class="form">
+            <div class="field-fullName">
+                <label for="fullName">fullName</label>
+                <input type="text" id="fullName" formControlName="fullName" />
+
+                @if (formData.get('fullName')?.touched && formData.get('fullName')?.errors?.['required']) {
+                <small>El nombre es obligatorio.</small>
+                }
+                @if (formData.get('fullName')?.touched && formData.get('fullName')?.errors?.['minlength']) {
+                <small>Mínimo 3 caracteres.</small>}
+            </div>
+
+            <div class="field-username">
+                <label for="username">username</label>
+                <input type="text" id="username" formControlName="username" />
+
+                @if (formData.get('username')?.touched && formData.get('username')?.errors?.['required']) {
+                <small>El username es obligatorio.</small>}
+            </div>
+
+            <div class="field-email">
+                <label for="email">email</label>
+                <input type="text" id="email" formControlName="email" />
+                @if (formData.get('email')?.touched && formData.get('email')?.errors?.['required']) {
+                <small>El email es obligatorio.</small>}
+            </div>
+
+            <div class="field-password">
+                <label for="password">password</label>
+                <input type="password" id="password" formControlName="password" />
+                @if (formData.get('password')?.touched && formData.get('password')?.errors?.['required']) {
+                <small>La contraseña es obligatoria.</small>}
+            </div>
+
+            <div class="field-phone">
+                <label for="phone">phone</label>
+                <input type="text" id="phone" formControlName="phone" />
+            </div>
+
+            <div class="field-role">
+                <label for="role">role</label>
+                <select id="role" formControlName="role">
+                    <option value="Cliente">Cliente</option>
+                    <option value="Propietario">Propietario</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="field-status">
+                <label for="status">Status</label>
+
+                <input type="radio" id="active" formControlName="isActive" [value]="true" />
+                <label for="active">Active</label>
+                <input type="radio" id="inactive" formControlName="isActive" [value]="false" />
+                <label for="inactive">Inactive</label>
+            </div>
+            <div class="field-buttons">
+                <button type="submit">Crear Usuario</button>
+                <button type="button">Clear</button>
+            </div>
+        </div>
+    </div>
+
+</form>

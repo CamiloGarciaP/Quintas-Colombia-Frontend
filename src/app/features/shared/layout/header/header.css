@@ -1,4 +1,74 @@
-/* .active-link {
-    font-weight: bold;
-    text-decoration: underline;
-    color: blue;} */
+/* ---------------HEADER--------------- */
+
+:host {
+    display: block;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    margin: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ---------------Logo QC--------------- */
+.logo-qc img {
+    height: 3.5rem;
+    width: auto;
+    display: block;
+}
+
+/* ---------------Menú--------------- */
+.menu .list {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu .list a {
+    font-family: var(--font-secondary);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.menu .list a:hover {
+    color: #d4af37;
+}
+
+.menu .list a.active {
+    border-bottom: 2px solid #d4af37;
+}
+
+/* ---------------Botón de Login (Lado Derecho)--------------- */
+.right .btn-login {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #1a1a2e;
+    color: white;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease;
+}
+
+.right .btn-login:hover {
+    background: #2a2a4e;
+}

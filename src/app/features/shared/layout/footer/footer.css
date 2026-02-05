@@ -1,0 +1,60 @@
+/* ---------------FOOTER--------------- */
+
+:host {
+    display: block;
+    margin-top: auto;
+}
+
+.footer {
+    background: black;
+    padding: 4rem 2rem;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr auto;
+    gap: 3rem;
+    align-items: center;
+    color: #d4a373;
+}
+
+.footer-logo img {
+    width: 60px;
+}
+
+.footer-info h3,
+.footer-categories h3 {
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.footer-info p {
+    max-width: 420px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Categorías */
+.footer-categories ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-categories li {
+    margin-bottom: 0.4rem;
+}
+
+/* Redes */
+.footer-social {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-social a {
+    color: #d4a373;
+    text-decoration: none;
+    font-weight: bold;
+}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable} from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { HttpUsers } from '../../../../core/services/http-users';
+import { HttpUsers } from '../../../../core/services/user.service';
 import { RouterLink } from "@angular/router";
 
 @Component({

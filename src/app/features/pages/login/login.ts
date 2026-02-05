@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpAuth } from '../../../core/services/http-auth';
+import { HttpAuth } from '../../../core/services/http-auth'
 
 @Component({
   selector: 'app-login',

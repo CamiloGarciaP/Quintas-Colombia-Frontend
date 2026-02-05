@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpUsers } from '../../../../core/services/http-users';
+import { HttpUsers } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-user-edit-form',

@@ -1,5 +1,11 @@
-h1 {
+/* ---------------APP LAYOUT (Sticky Footer)--------------- */
+:host {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    min-height: 100vh;
+}
+
+/* El contenido principal (router-outlet) crece para empujar el footer abajo */
+router-outlet + * {
+    flex: 1;
 }

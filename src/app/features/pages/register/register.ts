@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpUsers } from '../../../core/services/http-users';
+import { HttpUsers } from '../../../core/services/user.service';
 // import { required } from '@angular/forms/signals';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';

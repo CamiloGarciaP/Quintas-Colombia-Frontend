@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../interfaces/user';
+import { AuthResponse } from '../interfaces/auth-response';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,8 +14,8 @@ export class HttpAuth {
     return this.http.post<User>( 'http://localhost:3000/api/v1/auth/register', credentials);
   }
 
-  login(credentials: User) : Observable<User> {
-    return this.http.post<User>( 'http://localhost:3000/api/v1/auth/login', credentials);
+  login(credentials: Partial<User>) : Observable<AuthResponse> {
+    return this.http.post<AuthResponse>( 'http://localhost:3000/api/v1/auth/login', credentials);
   }
   
   saveLocalStorageData( token: string , userData: User){

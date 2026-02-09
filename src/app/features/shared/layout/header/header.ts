@@ -2,20 +2,31 @@ import { Component } from '@angular/core';
 import { RouterModule } from "@angular/router";
 import { HttpAuth } from '../../../../core/services/http-auth';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule ],
+  imports: [RouterModule, CommonModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
+  isMenuOpen: boolean = false;
+
   constructor(
     private httpAuth: HttpAuth,
     private router: Router
   ){}
 
-  logout(){
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen = false;
+  }
+
+  logout(): void {
     this.httpAuth.logout();
     this.router.navigate(['/login']);
   }

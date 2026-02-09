@@ -11,8 +11,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2.5rem;
-    margin: 1rem 2rem;
+    padding: 1rem 1.5rem;
+    margin: 1rem;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -21,13 +21,43 @@
 }
 
 /* ---------------Logo QC--------------- */
+.logo-qc {
+    display: none;
+}
+
 .logo-qc img {
-    height: 3.5rem;
+    height: 3rem;
     width: auto;
     display: block;
 }
 
-/* ---------------Menú--------------- */
+/* ---------------Menú Hamburguesa--------------- */
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 100;
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 3px;
+    background-color: var(--gold, #d4af37);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* ---------------Menú Desktop--------------- */
+.menu {
+    display: none;
+}
+
 .menu .list {
     display: flex;
     gap: 2rem;
@@ -53,6 +83,55 @@
     border-bottom: 2px solid #d4af37;
 }
 
+/* ---------------Menú Móvil Desplegable--------------- */
+.mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(27, 29, 36, 0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu.active {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.mobile-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-list li a {
+    font-family: var(--font-secondary);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+    display: block;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.mobile-list li a:hover {
+    background: rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+}
+
 /* ---------------Botón de Login (Lado Derecho)--------------- */
 .right .btn-login {
     display: flex;
@@ -60,15 +139,87 @@
     gap: 0.5rem;
     background: #1a1a2e;
     color: white;
-    padding: 0.6rem 1.4rem;
+    padding: 0.5rem 1rem;
     border-radius: 999px;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: background 0.3s ease;
 }
 
 .right .btn-login:hover {
     background: #2a2a4e;
+}
+
+/*--------------------------------------------------------------- MEDIA QUERIES ---------------------------------------------------------------*/
+@media (width > 567px) {
+    .hamburger {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: none !important;
+    }
+
+    .logo-qc {
+        display: block;
+    }
+
+    .menu {
+        display: block;
+    }
+
+    .top-header {
+        padding: 1rem 2.5rem;
+        margin: 1rem 2rem;
+    }
+
+    .right .btn-login {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (width > 768px) {
+    .top-header {
+        padding: 1.2rem 3rem;
+        margin: 1.5rem 3rem;
+    }
+
+    .logo-qc img {
+        height: 3.5rem;
+    }
+
+    .menu .list {
+        gap: 2.5rem;
+    }
+
+    .menu .list a {
+        font-size: 1rem;
+    }
+}
+
+@media (width > 1024px) {
+    .top-header {
+        padding: 1.5rem 4rem;
+        margin: 2rem 4rem;
+    }
+
+    .logo-qc img {
+        height: 4rem;
+    }
+
+    .menu .list {
+        gap: 3rem;
+    }
+
+    .menu .list a {
+        font-size: 1.05rem;
+    }
+
+    .right .btn-login {
+        padding: 0.7rem 1.6rem;
+        font-size: 1rem;
+    }
 }

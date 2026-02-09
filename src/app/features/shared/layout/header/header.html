@@ -1,12 +1,19 @@
 <header class="header">
     <div class="top-header">
 
+        <!-- Icono Hamburguesa (solo móvil) -->
+        <button class="hamburger" (click)="toggleMenu()">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
         <!-- Logo de Quintas Colombia -->
         <div class="logo-qc">
             <img src="assets/images/logo-QC-transparente.png" alt="Quintas Colombia">
         </div>
 
-        <!-- Menú de navegación -->
+        <!-- Menú de navegación (Desktop) -->
         <nav class="menu">
             <ul class="list">
                 <li>
@@ -27,4 +34,19 @@
         </div>
 
     </div>
+
+    <!-- Menú móvil desplegable -->
+    <nav class="mobile-menu" [class.active]="isMenuOpen">
+        <ul class="mobile-list">
+            <li>
+                <a routerLink="/" (click)="closeMenu()">Inicio</a>
+            </li>
+            <li>
+                <a routerLink="/properties" (click)="closeMenu()">Propiedades</a>
+            </li>
+            <li>
+                <a routerLink="/contact" (click)="closeMenu()">Contacto</a>
+            </li>
+        </ul>
+    </nav>
 </header>

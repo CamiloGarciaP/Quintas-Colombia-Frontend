@@ -1,58 +1,61 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpAuth } from '../../../core/services/http-auth'
+import { HttpAuth } from '../../../core/services/http-auth';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   public formData!: FormGroup;
+  public showPassword: boolean = false;
 
   constructor(
     private httpAuth: HttpAuth,
     private router: Router
-    ) { 
+  ) {
     this.formData = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
     });
   }
-  
-  onSubmit(){
-    if(this.formData.valid){
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  onSubmit(): void {
+    if (this.formData.valid) {
       console.log(this.formData.value);
       this.httpAuth.login(this.formData.value).subscribe({
         next: (data) => {
-          console.log('Usuario Logueado', data)
-
-          if(data.token && data.user){
+          console.log('Usuario Logueado', data);
+          if (data.token && data.user) {
             this.httpAuth.saveLocalStorageData(data.token, data.user);
             this.router.navigate(['/dashboard']);
           }
-
           this.formData.reset();
         },
         error: (error) => {
-          console.log('Error al loguear el usuario', error)
+          console.log('Error al loguear el usuario', error);
         },
         complete: () => {
-          console.log('Solicitud completada')
+          console.log('Solicitud completada');
         }
-      })
-    }else{
-      console.log('Formulario Invalido')
+      });
+    } else {
+      console.log('Formulario Invalido');
     }
   }
-  
-  onReset(){
+
+  onReset(): void {
     this.formData.reset();
     this.formData.markAsPristine();
     this.formData.markAsUntouched();
   }
-
 }
-

@@ -85,7 +85,7 @@
 
 /* ---------------Menú Móvil Desplegable--------------- */
 .mobile-menu {
-    display: none;
+    visibility: hidden;
     position: absolute;
     top: 100%;
     left: 1rem;
@@ -98,12 +98,14 @@
     transform: translateY(-10px);
     opacity: 0;
     transition: all 0.3s ease;
+    pointer-events: none;
 }
 
 .mobile-menu.active {
-    display: block;
+    visibility: visible;
     transform: translateY(0);
     opacity: 1;
+    pointer-events: auto;
 }
 
 .mobile-list {

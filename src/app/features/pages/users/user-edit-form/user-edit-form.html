@@ -7,10 +7,15 @@
     <input type="email" formControlName="email" placeholder="Email">
     <input type="text" formControlName="phone" placeholder="Teléfono">
 
-    <select formControlName="role">
-        <option value="Admin">Admin</option>
-        <option value="Cliente">Cliente</option>
-    </select>
+    <div formArrayName="roles">
+        <label>Roles:</label>
+        <div *ngFor="let role of rolesList; let i = index">
+            <label>
+                <input type="checkbox" [formControlName]="i">
+                {{ role }}
+            </label>
+        </div>
+    </div>
 
     <label>
         <input type="radio" [value]="true" formControlName="isActive"> Activo

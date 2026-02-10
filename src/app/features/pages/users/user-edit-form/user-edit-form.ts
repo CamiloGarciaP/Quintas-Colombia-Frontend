@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpUsers } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-user-edit-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './user-edit-form.html',
   styleUrl: './user-edit-form.css',
 })
@@ -14,6 +15,7 @@ export class UserEditForm implements OnInit {
 
   formData!: FormGroup;
   userId!: string;
+  rolesList: string[] = ['Cliente', 'Propietario', 'Admin'];
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +32,7 @@ export class UserEditForm implements OnInit {
       username: [''],
       email: [''],
       phone: [''],
-      role: [''],
+      roles: new FormArray(this.rolesList.map(() => new FormControl(false))),
       isActive: [true],
     });
 
@@ -52,16 +54,34 @@ export class UserEditForm implements OnInit {
         username: user.username,
         email: user.email,
         phone: user.phone,
-        role: user.role,
         isActive: user.isActive,
       });
+
+      // Marca los checkboxes de los roles que tiene el usuario
+      const rolesArray = this.formData.get('roles') as FormArray;
+      this.rolesList.forEach((role, i) => {
+        rolesArray.at(i).setValue(user.role?.includes(role) ?? false);
+      });
     });
+  }
+
+  get rolesFormArray(): FormArray {
+    return this.formData.get('roles') as FormArray;
   }
 
   onSubmit(): void {
     if (this.formData.invalid) return;
 
-    this.httpUser.updateUser(this.userId, this.formData.value)
+    // Convierte los checkboxes a un array de strings
+    const selectedRoles = this.rolesList.filter((_, i) => this.rolesFormArray.at(i).value);
+
+    const dataToSend = {
+      ...this.formData.value,
+      role: selectedRoles,  // Envía como 'role' (nombre del campo en el backend)
+    };
+    delete dataToSend.roles; // Elimina el campo auxiliar 'roles'
+
+    this.httpUser.updateUser(this.userId, dataToSend)
       .subscribe({
         next: () => {
           this.router.navigate(['/dashboard/user/list']);

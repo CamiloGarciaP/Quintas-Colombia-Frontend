@@ -67,6 +67,8 @@ export class Register {
       subscribe ({
         next: (data) => {
           console.log('Usuario Creado', data)
+          // Voy a redireccionar al login
+          this.router.navigate(['/login'])
         },
         error: (error) => {
           console.log('Error al crear el usuario', error)

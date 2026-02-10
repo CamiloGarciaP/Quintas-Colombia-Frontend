@@ -29,7 +29,7 @@ export class UserNewForm {
       email: new FormControl('', [ Validators.required, Validators.email ]),
       password: new FormControl('', [ Validators.required, Validators.minLength(8),  ]),
       phone: new FormControl(''),
-      role: new FormControl('Cliente'),
+      role: new FormControl(['Cliente']),
       isActive: new FormControl(true),
     });
   }

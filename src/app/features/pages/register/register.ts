@@ -61,7 +61,7 @@ export class Register {
     //Verificar si el formulario es válido
     //IMPORTANTE:Si los campos del formulario no tienen validaciones, el formulario siempre será válido.
     if(this.formData.valid){
-      console.log(this.formData.value);
+      // console.log(this.formData.value); // Se eliminó para no mostrar la contraseña en consola
       
       this.httpAuth.register(this.formData.value).
       subscribe ({

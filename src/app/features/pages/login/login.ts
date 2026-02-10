@@ -31,7 +31,7 @@ export class Login {
 
   onSubmit(): void {
     if (this.formData.valid) {
-      console.log(this.formData.value);
+      // console.log(this.formData.value); // Se eliminó para no mostrar la contraseña en consola
       this.httpAuth.login(this.formData.value).subscribe({
         next: (data) => {
           console.log('Usuario Logueado', data);

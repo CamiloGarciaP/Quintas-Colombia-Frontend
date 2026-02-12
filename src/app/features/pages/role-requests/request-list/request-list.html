@@ -1,0 +1,83 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Solicitudes de Roles</h2>
+    <button class="btn btn-outline-primary" (click)="loadRequests()">
+      Refrescar
+    </button>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Usuario</th>
+              <th scope="col">Rol Solicitado</th>
+              <th scope="col">Mensaje</th>
+              <th scope="col">Estado</th>
+              <th scope="col" class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let req of requests">
+              
+              <td>
+                <div class="d-flex flex-column">
+                  <span class="fw-bold">{{ req.user?.fullName || 'Usuario Eliminado' }}</span>
+                  <small class="text-muted">{{ req.user?.email }}</small>
+                </div>
+              </td>
+
+              <td>
+                <span class="badge bg-info text-dark">{{ req.requestedRole }}</span>
+              </td>
+
+              <td>
+                <span class="text-truncate d-inline-block" style="max-width: 250px;" 
+                      title="{{ req.message }}">
+                  {{ req.message || 'Sin mensaje' }}
+                </span>
+              </td>
+
+              <td>
+                <span class="badge"
+                  [ngClass]="{
+                    'bg-warning text-dark': req.status === 'Pendiente',
+                    'bg-success': req.status === 'Aprobada',
+                    'bg-danger': req.status === 'Rechazada'
+                  }">
+                  {{ req.status }}
+                </span>
+              </td>
+
+              <td class="text-end">
+                <div *ngIf="req.status === 'Pendiente'; else processedTemplate">
+                  <button class="btn btn-success btn-sm me-2" (click)="aprobar(req)" title="Aprobar">
+                    
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="rechazar(req)" title="Rechazar">
+                    
+                  </button>
+                </div>
+                
+                <ng-template #processedTemplate>
+                  <small class="text-muted fst-italic">
+                    Revisado por: {{ req.reviewedBy?.fullName || 'Admin' }}
+                  </small>
+                </ng-template>
+              </td>
+
+            </tr>
+
+            <tr *ngIf="requests.length === 0">
+              <td colspan="5" class="text-center py-4 text-muted">
+                No hay solicitudes pendientes en este momento.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

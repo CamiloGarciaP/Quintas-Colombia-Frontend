@@ -25,4 +25,10 @@
     </label>
 
     <button type="submit">Guardar cambios</button>
+
+    <div *ngIf="isOwnProfile" class="mt-3">
+    <button type="button" (click)="solicitarCambioRol()" class="btn btn-warning">
+        Solicitar ser Propietario
+    </button>
+</div>
 </form>

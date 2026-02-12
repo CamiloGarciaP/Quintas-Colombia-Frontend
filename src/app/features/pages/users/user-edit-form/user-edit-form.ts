@@ -1,3 +1,5 @@
+import { HttpAuth } from '../../../../core/services/http-auth';
+import { RoleService } from '../../../../core/services/role.services';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,12 +18,15 @@ export class UserEditForm implements OnInit {
   formData!: FormGroup;
   userId!: string;
   rolesList: string[] = ['Cliente', 'Propietario', 'Admin'];
+  isOwnProfile: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private httpUser: HttpUsers
+    private httpUser: HttpUsers,
+    private httpAuth: HttpAuth,
+    private roleService: RoleService
   ) {}
 
   ngOnInit(): void {
@@ -37,8 +42,12 @@ export class UserEditForm implements OnInit {
     });
 
     // ID desde la URL
-    this.userId= this.route.snapshot.paramMap.get('id')!;
-
+    this.userId = this.route.snapshot.paramMap.get('id')!;
+    
+    const currentUser = this.httpAuth.getUser();
+    if(currentUser && currentUser['_id'] === this.userId){
+      this.isOwnProfile = true;
+    }
 
     // Obtiene los usuarios y carga los datos
     this.httpUser.getUsers().subscribe(users => {
@@ -61,6 +70,9 @@ export class UserEditForm implements OnInit {
       const rolesArray = this.formData.get('roles') as FormArray;
       this.rolesList.forEach((role, i) => {
         rolesArray.at(i).setValue(user.role?.includes(role) ?? false);
+        if(!currentUser?.role?.includes('Admin')){
+          rolesArray.at(i).disable();
+        }
       });
     });
   }
@@ -90,7 +102,30 @@ export class UserEditForm implements OnInit {
           console.error('Error al actualizar usuario', err);
         }
       });
-}
+    }
+
+    solicitarCambioRol(): void {
+      const message = "Hola, solicito ser Propietario para publicar mis fincas.";
+      
+      // Preguntamos al usuario si está seguro
+      if(confirm('¿Estás seguro de solicitar el rol de Propietario?')) {
+          this.roleService.createRoleRequest(message).subscribe({
+            next: () => {
+              alert('¡Solicitud enviada! Te notificaremos por correo.');
+            },
+            error: (err) => {
+              console.error(err);
+              // Si el backend responde 409 es que ya tiene una pendiente
+              if(err.status === 409) {
+                alert('Ya tienes una solicitud pendiente en revisión.');
+              } else {
+                alert('Error al enviar la solicitud.');
+              }
+            }
+          });
+      }
+    }
+
 
 }
 

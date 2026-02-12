@@ -7,6 +7,7 @@ import { UserList } from './features/pages/users/user-list/user-list';
 import { UserNewForm } from './features/pages/users/user-new-form/user-new-form';
 import { UserEditForm } from './features/pages/users/user-edit-form/user-edit-form';
 import { Dashboard } from './features/pages/dashboard/dashboard';
+import { RequestListComponent } from './features/pages/role-requests/request-list/request-list';
 
 export const routes: Routes = [
     { path:'home', component: Home },
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: 'dashboard/user/list', component: UserList},
     { path: 'dashboard/user/new', component: UserNewForm },
     { path: 'dashboard/user/edit/:id',component: UserEditForm},
+    {path: 'dashboard/admin/requests', component: RequestListComponent},
     { path: '', redirectTo: 'home', pathMatch: 'full'},
     { path:'**', redirectTo: '404', pathMatch: 'full'},
 ];

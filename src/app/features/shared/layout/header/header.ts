@@ -26,6 +26,10 @@ export class Header {
     this.isMenuOpen = false;
   }
 
+  get isLoggedIn(): boolean {
+    return !!this.httpAuth.getToken();
+  }
+
   logout(): void {
     this.httpAuth.logout();
     this.router.navigate(['/login']);

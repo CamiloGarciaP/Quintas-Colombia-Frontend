@@ -1,83 +1,82 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Solicitudes de Roles</h2>
-    <button class="btn btn-outline-primary" (click)="loadRequests()">
-      Refrescar
-    </button>
-  </div>
+<div class="page-requests">
+    <div class="requests-container">
+        <a routerLink="/dashboard" class="regresar-home">
+            <span class="arrow">&larr;</span>
+            Volver al Dashboard
+        </a>
 
-  <div class="card shadow-sm">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0 align-middle">
-          <thead class="table-light">
-            <tr>
-              <th scope="col">Usuario</th>
-              <th scope="col">Rol Solicitado</th>
-              <th scope="col">Mensaje</th>
-              <th scope="col">Estado</th>
-              <th scope="col" class="text-end">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let req of requests">
-              
-              <td>
-                <div class="d-flex flex-column">
-                  <span class="fw-bold">{{ req.user?.fullName || 'Usuario Eliminado' }}</span>
-                  <small class="text-muted">{{ req.user?.email }}</small>
+        <div class="header-row">
+            <h1 class="requests-title">Solicitudes de Roles</h1>
+            <button class="refresh-btn" (click)="loadRequests()">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+                Refrescar
+            </button>
+        </div>
+
+        <!-- Lista de solicitudes -->
+        <div class="requests-list">
+            <div *ngFor="let req of requests" class="request-card">
+                <div class="card-header">
+                    <div class="user-info">
+                        <svg class="user-avatar" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <div class="user-details">
+                            <span class="user-name">{{ req.user?.fullName || 'Usuario Eliminado' }}</span>
+                            <span class="user-email">{{ req.user?.email }}</span>
+                        </div>
+                    </div>
+                    <span class="status-badge"
+                          [ngClass]="{
+                            'status-pending': req.status === 'Pendiente',
+                            'status-approved': req.status === 'Aprobada',
+                            'status-rejected': req.status === 'Rechazada'
+                          }">
+                        {{ req.status }}
+                    </span>
                 </div>
-              </td>
 
-              <td>
-                <span class="badge bg-info text-dark">{{ req.requestedRole }}</span>
-              </td>
-
-              <td>
-                <span class="text-truncate d-inline-block" style="max-width: 250px;" 
-                      title="{{ req.message }}">
-                  {{ req.message || 'Sin mensaje' }}
-                </span>
-              </td>
-
-              <td>
-                <span class="badge"
-                  [ngClass]="{
-                    'bg-warning text-dark': req.status === 'Pendiente',
-                    'bg-success': req.status === 'Aprobada',
-                    'bg-danger': req.status === 'Rechazada'
-                  }">
-                  {{ req.status }}
-                </span>
-              </td>
-
-              <td class="text-end">
-                <div *ngIf="req.status === 'Pendiente'; else processedTemplate">
-                  <button class="btn btn-success btn-sm me-2" (click)="aprobar(req)" title="Aprobar">
-                    
-                  </button>
-                  <button class="btn btn-danger btn-sm" (click)="rechazar(req)" title="Rechazar">
-                    
-                  </button>
+                <div class="card-body">
+                    <div class="info-row">
+                        <span class="info-label">Rol solicitado:</span>
+                        <span class="role-badge">{{ req.requestedRole }}</span>
+                    </div>
+                    <div class="info-row" *ngIf="req.message">
+                        <span class="info-label">Mensaje:</span>
+                        <span class="info-value">{{ req.message }}</span>
+                    </div>
                 </div>
-                
-                <ng-template #processedTemplate>
-                  <small class="text-muted fst-italic">
-                    Revisado por: {{ req.reviewedBy?.fullName || 'Admin' }}
-                  </small>
+
+                <div class="card-actions" *ngIf="req.status === 'Pendiente'; else processedBlock">
+                    <button class="btn-approve" (click)="aprobar(req)">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        Aprobar
+                    </button>
+                    <button class="btn-reject" (click)="rechazar(req)">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                        Rechazar
+                    </button>
+                </div>
+                <ng-template #processedBlock>
+                    <div class="card-reviewed">
+                        <span class="reviewed-text">Revisado por: {{ req.reviewedBy?.fullName || 'Admin' }}</span>
+                    </div>
                 </ng-template>
-              </td>
+            </div>
 
-            </tr>
-
-            <tr *ngIf="requests.length === 0">
-              <td colspan="5" class="text-center py-4 text-muted">
-                No hay solicitudes pendientes en este momento.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            <!-- Estado vacío -->
+            <div *ngIf="requests.length === 0" class="empty-state">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="empty-icon">
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+                </svg>
+                <p class="empty-text">No hay solicitudes pendientes en este momento.</p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

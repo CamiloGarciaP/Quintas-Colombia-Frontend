@@ -3,13 +3,13 @@ import { RoleService } from '../../../../core/services/role.services';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpUsers } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-user-edit-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './user-edit-form.html',
   styleUrl: './user-edit-form.css',
 })
@@ -19,6 +19,7 @@ export class UserEditForm implements OnInit {
   userId!: string;
   rolesList: string[] = ['Cliente', 'Propietario', 'Admin'];
   isOwnProfile: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +48,9 @@ export class UserEditForm implements OnInit {
     const currentUser = this.httpAuth.getUser();
     if(currentUser && currentUser['_id'] === this.userId){
       this.isOwnProfile = true;
+    }
+    if(currentUser?.role?.includes('Admin')){
+      this.isAdmin = true;
     }
 
     // Obtiene los usuarios y carga los datos

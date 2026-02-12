@@ -70,6 +70,9 @@ export class HttpAuth {
     
     //Paso3: Realizar la peticion al backend para verificar el estado de autenticacion
     return this.http.get(`${this.apiUrl}/renewtoken`, {headers})
+
+
+    
     return true;        //Permite el flujo de la logico del algoritmo
   }
 }

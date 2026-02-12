@@ -1,35 +1,86 @@
-<h2>Lista de Usuarios</h2>
+<div class="page-users">
+    <div class="users-container">
+        <a routerLink="/dashboard" class="regresar-home">
+            <span class="arrow">&larr;</span>
+            Volver al Dashboard
+        </a>
 
-<table border="1" cellPadding="6">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Usuario</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
+        <div class="header-row">
+            <h1 class="users-title">Lista de Usuarios</h1>
+            <a routerLink="/dashboard/user/new" class="btn-new">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                Nuevo
+            </a>
+        </div>
 
-    <tbody>
-        @for (user of users$ | async; track $index){
-            <tr>
-                <td>{{user.fullName}}</td>
-                <td>{{user.username}}</td>
-                <td>{{user.email}}</td>
-                <td>{{user.phone}}</td>
-                <td>{{user.role.join(', ')}}</td>
-                <td>
-                    {{user.isActive ? 'Activo' : 'Inactivo'}}
-                </td>
-                <td>
-                    <a [routerLink]="['/dashboard', 'user', 'edit', user._id]">
-                        Editar
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <!-- Lista de usuarios como cards -->
+        <div class="users-list">
+            @for (user of users$ | async; track $index) {
+                <div class="user-card">
+                    <div class="card-header">
+                        <div class="user-info">
+                            <svg class="user-avatar" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                            <div class="user-details">
+                                <span class="user-name">{{ user.fullName }}</span>
+                                <span class="user-username">@{{ user.username }}</span>
+                            </div>
+                        </div>
+                        <span class="status-badge" 
+                              [class.status-active]="user.isActive" 
+                              [class.status-inactive]="!user.isActive">
+                            {{ user.isActive ? 'Activo' : 'Inactivo' }}
+                        </span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="info-row">
+                            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span class="info-value">{{ user.email }}</span>
+                        </div>
+                        <div class="info-row">
+                            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                            <span class="info-value">{{ user.phone || 'Sin teléfono' }}</span>
+                        </div>
+                        <div class="info-row">
+                            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <div class="roles-list">
+                                @for (role of user.role; track $index) {
+                                    <span class="role-badge">{{ role }}</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <a [routerLink]="['/dashboard', 'user', 'edit', user._id]" class="btn-edit">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                            </svg>
+                            Editar
+                        </a>
+                    </div>
+                </div>
+            }
+
+            <!-- Estado vacío -->
+            @if ((users$ | async)?.length === 0) {
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="empty-icon">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                    <p class="empty-text">No hay usuarios registrados.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

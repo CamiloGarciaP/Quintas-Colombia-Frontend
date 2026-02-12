@@ -14,6 +14,7 @@
                 <img class="img-Logo" src="assets/images/Logo.svg" alt="Quintas Colombia">
             </a>
         </div>
+        
 
         <!-- Menú de navegación (Desktop) -->
         <nav class="menu">
@@ -30,9 +31,10 @@
             </ul>
         </nav>
 
-        <!-- Login -->
+        <!-- Login / Logout -->
         <div class="right">
-            <a routerLink="/login" class="btn-login">Login</a>
+            <a *ngIf="!isLoggedIn" routerLink="/login" class="btn-login">Login</a>
+            <button *ngIf="isLoggedIn" class="btn-logout" (click)="logout()">Cerrar Sesión</button>
         </div>
 
     </div>
@@ -48,6 +50,12 @@
             </li>
             <li>
                 <a routerLink="/contact" (click)="closeMenu()">Contacto</a>
+            </li>
+            <li *ngIf="!isLoggedIn">
+                <a routerLink="/login" (click)="closeMenu()">Login</a>
+            </li>
+            <li *ngIf="isLoggedIn">
+                <a (click)="logout(); closeMenu()" class="logout-link">Cerrar Sesión</a>
             </li>
         </ul>
     </nav>

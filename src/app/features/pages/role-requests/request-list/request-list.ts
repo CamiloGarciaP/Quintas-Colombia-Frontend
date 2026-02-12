@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RoleService } from '../../../../core/services/role.services';
 import { HttpAuth } from '../../../../core/services/http-auth';
 import Swal from 'sweetalert2'; 
@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-request-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './request-list.html',
   styleUrls: ['./request-list.css']
 })

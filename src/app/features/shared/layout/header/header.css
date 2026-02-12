@@ -36,6 +36,7 @@
     display: block;
 }
 
+
 /* ---------------Menú Hamburguesa--------------- */
 .hamburger {
     display: flex;
@@ -160,6 +161,34 @@
     background: #2a2a4e;
 }
 
+/* ---------------Botón de Logout (Lado Derecho)--------------- */
+.right .btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(220, 53, 69, 0.15);
+    color: #ff6b7a;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.right .btn-logout:hover {
+    background: rgba(220, 53, 69, 0.3);
+    color: #ff8a96;
+}
+
+/* ---------------Logout Link Móvil--------------- */
+.logout-link {
+    cursor: pointer;
+    color: #ff6b7a !important;
+}
+
 /*--------------------------------------------------------------- MEDIA QUERIES ---------------------------------------------------------------*/
 @media (width > 567px) {
     .hamburger {
@@ -184,6 +213,11 @@
     }
 
     .right .btn-login {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.95rem;
+    }
+
+    .right .btn-logout {
         padding: 0.6rem 1.4rem;
         font-size: 0.95rem;
     }
@@ -230,6 +264,11 @@
     }
 
     .right .btn-login {
+        padding: 0.7rem 1.6rem;
+        font-size: 1rem;
+    }
+
+    .right .btn-logout {
         padding: 0.7rem 1.6rem;
         font-size: 1rem;
     }

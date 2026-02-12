@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable} from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { HttpUsers } from '../../../../core/services/user.service';
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-user-list',
-  imports: [AsyncPipe, RouterLink],
+  imports: [AsyncPipe, RouterLink, RouterModule],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })

@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../interfaces/user';
 import { AuthResponse } from '../interfaces/auth-response';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +16,24 @@ export class HttpAuth {
   private currentUser = new BehaviorSubject<User | null>(null);
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   register(credentials: User): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/auth/register`, credentials);
   }
 
   login(credentials: Partial<User>): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials);
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials)
+    .pipe(
+      tap( data => {
+        if(data.token && data.user){
+          this.currentToken.next(data.token);
+          this.currentUser.next(data.user);
+          this.saveLocalStorageData(data.token, data.user);
+          this.router.navigate(['/dashboard']);
+        }
+      })
+    )
   }
   
   saveLocalStorageData( token: string , userData: User){
@@ -56,23 +68,36 @@ export class HttpAuth {
     this.currentUser.next(null);
   }
 
-  checkAuthStatus(){
+  checkAuthStatus(): Observable<boolean>{
     //Paso1: Verificar si el token existe en el localStorage 
     const {token} = this.getLocalStorageData();
     //Responder al cliente si no existe el token(false) o si existe(true)
     if( ! token ){
       this.clearLocalStorageData(); //Limpiar cualquier dato residual en caso de que el token no exista
-      return false;               //Bloquea el flujo de la logica del algoritmo
+      return of(false);               //Bloquea el flujo de la logica del algoritmo
     }
 
     //Paso2: Crear el encabezado con el nombre del campo que va a contener el token enviado por el backend
     const headers = new HttpHeaders().set( 'X-Token', token );
     
     //Paso3: Realizar la peticion al backend para verificar el estado de autenticacion
-    return this.http.get(`${this.apiUrl}/renewtoken`, {headers})
-
-
-    
-    return true;        //Permite el flujo de la logico del algoritmo
+    return this.http.get<any>(`${this.apiUrl}/auth/renewtoken`, {headers})
+      .pipe(
+        tap( ( response ) => {
+          console.log('Respuesta del backend', response);
+        }),
+        map( ( response ) => {
+          if (!response.token && !response.user){
+            return false;
+          }
+          //Paso4: Actualizar el estado de autenticacion
+          this.saveLocalStorageData(response.token, response.user);     //Actualiza los datos en el local Storage
+          return true;                                            //Permite el flujo de la logico del algoritmo
+        }),
+        catchError( error => {
+          console.error('ERROR:', error);
+          return of(false);          
+        })
+      );
   }
 }

@@ -11,6 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 //Pas2: Verificar invocar el método checkAuthStatus()
   return httpAuth.checkAuthStatus().pipe(
     tap( (isAuthenticated) => {
+      console.info('Estado de autenticación:', isAuthenticated);
       if(!isAuthenticated){
         router.navigateByUrl('/login');   //Redireccionar cuando no me deja acceder a la ruta
       }

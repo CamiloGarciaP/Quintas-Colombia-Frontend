@@ -32,9 +32,14 @@
         </nav>
 
         <!-- Login / Logout -->
+        
         <div class="right">
-            <a *ngIf="!isLoggedIn" routerLink="/login" class="btn-login">Login</a>
-            <button *ngIf="isLoggedIn" class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+            @if( httpAuth.currentUser$ | async; as user ) {
+                <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+            }
+            @else {
+                <a routerLink="/login" class="btn-login">Login</a>
+            }
         </div>
 
     </div>
@@ -51,12 +56,18 @@
             <li>
                 <a routerLink="/contact" (click)="closeMenu()">Contacto</a>
             </li>
-            <li *ngIf="!isLoggedIn">
-                <a routerLink="/login" (click)="closeMenu()">Login</a>
-            </li>
-            <li *ngIf="isLoggedIn">
-                <a (click)="logout(); closeMenu()" class="logout-link">Cerrar Sesión</a>
-            </li>
+
+            @if( httpAuth.currentUser$ | async; as user ) {
+                <li>
+                    <button class="btn-logout" (click)="logout(); closeMenu()">Cerrar Sesión</button>
+                </li>
+            }
+            @else {
+                <li>
+                    <a routerLink="/login" (click)="closeMenu()">Login</a>
+                </li>
+            }
+
         </ul>
     </nav>
 </header>

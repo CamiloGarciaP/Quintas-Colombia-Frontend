@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterModule } from "@angular/router";
 import { HttpAuth } from '../../../../core/services/http-auth';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, AsyncPipe],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
@@ -14,7 +14,7 @@ export class Header {
   isMenuOpen: boolean = false;
 
   constructor(
-    private httpAuth: HttpAuth,
+    public httpAuth: HttpAuth,
     private router: Router
   ){}
 
@@ -26,9 +26,9 @@ export class Header {
     this.isMenuOpen = false;
   }
 
-  get isLoggedIn(): boolean {
-    return !!this.httpAuth.getToken();
-  }
+  // get isLoggedIn(): boolean {
+  //   return !!this.httpAuth.getToken();
+  // }
 
   logout(): void {
     this.httpAuth.logout();

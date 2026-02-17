@@ -24,7 +24,7 @@ export class RequestListComponent implements OnInit {
 
   ngOnInit(): void {
     // Verificar que el usuario esté autenticado antes de cargar las solicitudes
-    const token = this.authService.getToken();
+    const token = this.authService.getLocalStorageData().userStr;
     if (!token) {
       Swal.fire('Acceso denegado', 'Debes iniciar sesión para acceder a esta página.', 'warning');
       this.router.navigate(['/login']);

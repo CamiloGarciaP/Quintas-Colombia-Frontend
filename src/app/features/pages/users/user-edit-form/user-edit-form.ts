@@ -45,33 +45,44 @@ export class UserEditForm implements OnInit {
     // ID desde la URL
     this.userId = this.route.snapshot.paramMap.get('id')!;
     
-    const currentUser = this.httpAuth.getUser();
-    if(currentUser && currentUser['_id'] === this.userId){
+    const currentUser: any = this.httpAuth.getLocalStorageData().userStr;
+
+    if(currentUser && currentUser._id === this.userId){
       this.isOwnProfile = true;
     }
-    if(currentUser?.role?.includes('Admin')){
-      this.isAdmin = true;
+
+    //Normalizar el rol: si llega como string, convertirlo a array
+    const allowedRoles = ['Admin', 'Cliente', 'Propietario'];
+    const userRoles = Array.isArray(currentUser?.role) ? currentUser.role : [currentUser?.role];
+
+    //Validar si al menos uno de los roles del usuario está en la lista de roles permitidos
+    const hasPermission = userRoles.some((r: string) => allowedRoles.includes(r));
+    if (!hasPermission){
+        return alert(`Error: El rol ${currentUser?.role} no tiene permiso para realizar esta acción`);
     }
+
+    //Verificar si el usuario es Admin
+    this.isAdmin = userRoles.includes('Admin');
 
     // Obtiene los usuarios y carga los datos
     this.httpUser.getUsers().subscribe(users => {
 
-      const user = users.find(u => u._id === this.userId);
-      if (!user) {
-        console.error('Usuario no encontrado por ID:', this.userId);
-        return;
-      }
+    const user = users.find(u => u._id === this.userId);
+    if (!user) {
+      console.error('Usuario no encontrado por ID:', this.userId);
+      return;
+    }
 
-      this.formData.patchValue({
-        fullName: user.fullName,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        isActive: user.isActive,
-      });
+    this.formData.patchValue({
+      fullName: user.fullName,
+      username: user.username,
+      email: user.email,
+      phone: user.phone,
+      isActive: user.isActive,
+    });
 
-      // Marca los checkboxes de los roles que tiene el usuario
-      const rolesArray = this.formData.get('roles') as FormArray;
+    // Marca los checkboxes de los roles que tiene el usuario
+    const rolesArray = this.formData.get('roles') as FormArray;
       this.rolesList.forEach((role, i) => {
         rolesArray.at(i).setValue(user.role?.includes(role) ?? false);
         if(!currentUser?.role?.includes('Admin')){

@@ -1,2 +1,36 @@
-<h1>Dashboard</h1>
-<p>Pagina donde se muestra la informacion del usuario logueado</p>
+<div class="layout-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Mi Dashboard</h2>
+    </div>
+
+    <nav class="sidebar-menu">
+      <ul>
+        @for (item of menuItems; track item.route) {
+          <li>
+            <a [routerLink]="item.route" routerLinkActive="active-link">
+              @if (item.icon) {
+                <i [class]="item.icon"></i>
+              }
+              <span>{{ item.title }}</span>
+            </a>
+          </li>
+        } @empty {
+          <li class="empty-menu">
+            <p>No tienes permisos para acceder a ninguna sección.</p>
+          </li>
+        }
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <p>Bienvenido al Panel de Control</p>
+    </header>
+
+    <div class="content-dinamico">
+        <router-outlet></router-outlet> 
+    </div>
+  </main>
+</div>

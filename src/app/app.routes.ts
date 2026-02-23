@@ -10,6 +10,7 @@ import { Dashboard } from './features/pages/dashboard/dashboard';
 import { RequestListComponent } from './features/pages/role-requests/request-list/request-list';
 import { authGuard } from './core/guards/auth-guard';
 import { publicGuard } from './core/guards/public-guard';
+import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
     { path:'home', component: Home },
@@ -22,37 +23,45 @@ export const routes: Routes = [
     { path:
          'dashboard',
           component: Dashboard,
-           canActivate: [authGuard]
-    },
+           canActivate: [authGuard],    //Solo se pone authGuard, porque el roleGuard se pone en cada ruta hija.
+           children: [
+            { 
+                path: '',
+                redirectTo: 'dashboard',
+                pathMatch: 'full'
+            },
 
-    //NOTA: /dashboard/lo que sea son las rutas de usuarios autenticados con un rol específico.
-    { 
-        path:
-         'dashboard/user/list',
-          component: UserList,
-           canActivate: [authGuard],
-           data: {role: 'Admin'}
-    },
-    { 
-        path:
-         'dashboard/user/new',
-          component: UserNewForm,
-           canActivate: [authGuard],
-           data: {role: 'Admin'}
-    },
-    { 
-        path:
-         'dashboard/user/edit/:id',
-          component: UserEditForm,
-           canActivate: [authGuard],
-           data: {role: 'Admin'}
-    },
-    { 
-        path:
-         'dashboard/admin/requests',
-          component: RequestListComponent,
-           canActivate: [authGuard],
-           data: {role: 'Admin'} 
+            //NOTA: /dashboard/lo que sea son las rutas de usuarios autenticados con un rol específico( En este caso el Admin).
+            { 
+                path:
+                'user/list',
+                component: UserList,
+                canActivate: [roleGuard],
+                data: {roles: ['Admin']}
+            },
+            { 
+                path:
+                'user/new',
+                component: UserNewForm,
+                canActivate: [roleGuard],
+                data: {roles: ['Admin']}
+            },
+            { 
+                path:
+                'user/edit/:id',
+                component: UserEditForm,
+                canActivate: [roleGuard],
+                data: {roles: ['Admin']}
+            },
+            { 
+                path:
+                'admin/requests',
+                component: RequestListComponent,
+                canActivate: [roleGuard],
+                data: {roles: ['Admin']} 
+            },
+            
+           ]
     },
 
     { path: '', redirectTo: 'home', pathMatch: 'full'},

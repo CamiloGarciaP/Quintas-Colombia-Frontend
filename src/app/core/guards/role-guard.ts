@@ -30,10 +30,21 @@ export const roleGuard: CanActivateFn = async (route, state) => {
     return true;
   }
 
-  //PASO 3: Verificamos sí el role del usuario ESTÁ DENTRO de los roles permitidos.
-  if(role && allowedRoles.includes(role)){
-    return true;
+  // PASO 3: Verificamos si el usuario tiene al menos un rol que esté permitido
+  if (role && role.length > 0) {
+    
+    // Iteramos sobre los roles del usuario para ver si ALGUNO coincide con los permitidos
+    const tienePermiso = role.some( rolUsuario => allowedRoles.includes(rolUsuario) );
+
+    if (tienePermiso) {
+      return true; // Dejamos pasar al usuario
+    }
   }
+
+  //PASO 3: Verificamos sí el role del usuario ESTÁ DENTRO de los roles permitidos.
+  // if(role && allowedRoles.includes(role)){
+  //   return true;
+  // }
 
   //PASO 4: Si no cumple ninguna condición, denegamos el acceso. 
   router.navigateByUrl('/dashboard'); 

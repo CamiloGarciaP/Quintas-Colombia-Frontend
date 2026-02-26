@@ -1,3 +1,9 @@
-<app-header />
+@if (showPublicLayout) {
+  <app-header />
+}
+
 <router-outlet />
-<app-footer />
+
+@if (showPublicLayout) {
+  <app-footer />
+}

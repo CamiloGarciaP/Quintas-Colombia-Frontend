@@ -8,6 +8,10 @@ import { UserNewForm } from './features/pages/users/user-new-form/user-new-form'
 import { UserEditForm } from './features/pages/users/user-edit-form/user-edit-form';
 import { Dashboard } from './features/pages/dashboard/dashboard';
 import { RequestListComponent } from './features/pages/role-requests/request-list/request-list';
+
+import { PropertyList } from './features/pages/properties/property-list/property-list';
+import { PropertyForm } from './features/pages/properties/property-form/property-form';
+
 import { authGuard } from './core/guards/auth-guard';
 import { publicGuard } from './core/guards/public-guard';
 import { roleGuard } from './core/guards/role-guard';
@@ -27,7 +31,7 @@ export const routes: Routes = [
            children: [
             { 
                 path: '',
-                redirectTo: 'dashboard',
+                redirectTo: 'user/list',
                 pathMatch: 'full'
             },
 
@@ -60,7 +64,29 @@ export const routes: Routes = [
                 canActivate: [roleGuard],
                 data: {roles: ['Admin']} 
             },
-            
+            {
+                path:
+                'property/list',
+                component: PropertyList,
+                canActivate: [roleGuard],
+                data: {roles: ['Admin']}
+            },
+            {
+                path:
+                'property/new',
+                component: PropertyForm,
+                canActivate: [roleGuard],
+                data: {roles: ['Admin', 'Propietario']}
+            },
+            {
+                path:
+                'property/edit/:id',
+                component: PropertyForm,
+                canActivate: [roleGuard],
+                data: {roles: ['Admin', 'Propietario']}
+            }
+
+
            ]
     },
 

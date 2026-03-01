@@ -9,7 +9,7 @@
     --transition: all 0.3s ease;
 }
 
-.page-newuser {
+.page-property-form {
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -19,7 +19,7 @@
     font-family: var(--font-primary);
 }
 
-.newuser-container {
+.property-form-container {
     width: 100%;
     max-width: 32rem;
     display: flex;
@@ -50,7 +50,7 @@
     font-size: 1.6rem;
 }
 
-.newuser-title {
+.form-title {
     color: var(--gold);
     font-size: 2rem;
     font-weight: 600;
@@ -59,11 +59,48 @@
     letter-spacing: 0.5px;
 }
 
-.newuser-form {
+.property-form {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+}
+
+/* ---------- Section groups ---------- */
+.section-group {
+    padding: 1.2rem 1.4rem;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 1rem;
+    background: rgba(212, 175, 55, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.section-label {
+    display: block;
+    color: var(--gold);
+    font-size: 1.4rem;
+    font-weight: 600;
+    font-family: var(--font-secondary);
+    margin-bottom: 0.2rem;
+}
+
+/* ---------- Grid layouts ---------- */
+.grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+@media (max-width: 567px) {
+    .grid-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.grid-2 {
+    grid-template-columns: 1fr 1fr;
 }
 
 /* ---------- Input fields ---------- */
@@ -86,6 +123,11 @@
     height: 1.8rem;
     color: var(--white);
     pointer-events: none;
+}
+
+.input-icon.textarea-icon {
+    top: 1.4rem;
+    transform: none;
 }
 
 .form-input {
@@ -113,30 +155,35 @@
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.4);
 }
 
-/* ---------- Error messages ---------- */
-.error-msg {
-    position: absolute;
-    bottom: 0;
-    left: 1.4rem;
-    color: #ff6b6b;
-    font-size: 1.2rem;
-    font-family: var(--font-secondary);
-}
-
-.server-error {
+/* ---------- Textarea ---------- */
+.form-textarea {
     width: 100%;
-    background: rgba(220, 53, 69, 0.15);
-    border: 1px solid rgba(220, 53, 69, 0.4);
-    color: #ff6b6b;
-    padding: 1rem 1.4rem;
-    border-radius: 1rem;
+    padding: 1.4rem 1.4rem 1.4rem 4.5rem;
+    background-color: var(--gold);
+    border: none;
+    border-radius: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 500;
     font-family: var(--font-secondary);
-    font-size: 1.3rem;
-    text-align: center;
+    color: var(--white);
+    transition: var(--transition);
     box-sizing: border-box;
+    resize: vertical;
+    min-height: 6rem;
 }
 
-/* ---------- Select (role) ---------- */
+.form-textarea::placeholder {
+    color: var(--white);
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.form-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.4);
+}
+
+/* ---------- Select ---------- */
 .select-wrapper {
     position: relative;
 }
@@ -180,24 +227,30 @@
     color: var(--white);
 }
 
-/* ---------- Roles & Status sections ---------- */
-.roles-section,
-.status-section {
-    padding: 1.2rem 1.4rem;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    border-radius: 1rem;
-    background: rgba(212, 175, 55, 0.05);
-}
-
-.section-label {
-    display: block;
-    color: var(--gold);
-    font-size: 1.4rem;
-    font-weight: 600;
+/* ---------- Error messages ---------- */
+.error-msg {
+    position: absolute;
+    bottom: 0;
+    left: 1.4rem;
+    color: #ff6b6b;
+    font-size: 1.2rem;
     font-family: var(--font-secondary);
-    margin-bottom: 0.6rem;
 }
 
+.server-error {
+    width: 100%;
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    color: #ff6b6b;
+    padding: 1rem 1.4rem;
+    border-radius: 1rem;
+    font-family: var(--font-secondary);
+    font-size: 1.3rem;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ---------- Status section ---------- */
 .status-options {
     display: flex;
     gap: 2rem;
@@ -284,9 +337,9 @@
 
 /*--------------------------------------------------------------- MEDIA QUERIES ---------------------------------------------------------------*/
 @media (width > 567px) {
-    .page-newuser { padding: 2rem; }
-    .newuser-container { max-width: 38rem; padding: 3rem 1.6rem; gap: 2rem; }
-    .newuser-title { font-size: 2.8rem; }
+    .page-property-form { padding: 2rem; }
+    .property-form-container { max-width: 38rem; padding: 3rem 1.6rem; gap: 2rem; }
+    .form-title { font-size: 2.8rem; }
     .form-input { padding: 1.6rem 5rem; font-size: 1.1rem; }
     .input-icon { width: 2rem; height: 2rem; left: 1.6rem; }
     .submit-button,
@@ -294,8 +347,8 @@
 }
 
 @media (width > 768px) {
-    .newuser-container { max-width: 42rem; padding: 4rem 2.4rem; gap: 2.4rem; }
-    .newuser-title { font-size: 3.2rem; }
+    .property-form-container { max-width: 42rem; padding: 4rem 2.4rem; gap: 2.4rem; }
+    .form-title { font-size: 3.2rem; }
     .form-input { padding: 1.8rem 5.5rem; font-size: 1.2rem; }
     .input-icon { width: 2.2rem; height: 2.2rem; left: 2rem; }
     .submit-button,
@@ -303,14 +356,14 @@
 }
 
 @media (width > 1024px) {
-    .newuser-container { max-width: 45rem; padding: 4rem 3.2rem; }
-    .newuser-title { font-size: 3.6rem; }
+    .property-form-container { max-width: 45rem; padding: 4rem 3.2rem; }
+    .form-title { font-size: 3.6rem; }
 }
 
 @media (width > 1200px) {
-    .newuser-container { max-width: 48rem; padding: 5rem 4rem; }
+    .property-form-container { max-width: 48rem; padding: 5rem 4rem; }
 }
 
 @media (width > 1400px) {
-    .newuser-container { max-width: 50rem; padding: 5rem 4.8rem; }
+    .property-form-container { max-width: 50rem; padding: 5rem 4.8rem; }
 }

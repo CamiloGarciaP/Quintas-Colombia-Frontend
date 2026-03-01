@@ -27,7 +27,25 @@ const MENU_ITEMS: MenuItem[] = [
     icon: '',
     roles: ['Admin']
   },
-]
+  {
+    title: 'Lista de propiedades',
+    route: 'property/list',
+    icon: '',
+    roles: ['Admin']
+  },
+  {
+    title: 'Nueva propiedad',
+    route: 'property/new',
+    icon: '',
+    roles: ['Admin', 'Propietario']
+  },
+  {
+    title: 'Editar propiedad',
+    route: 'property/edit/:id',
+    icon: '',
+    roles: ['Admin', 'Propietario']
+  }
+];
 @Component({
   selector: 'app-dashboard',
   imports: [RouterModule],

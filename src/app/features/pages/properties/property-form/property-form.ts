@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpProperties } from '../../../../core/services/http-properties';
-import { HttpAuth } from '../../../../core/services/http-auth'; // Para saber quién es el dueño
+import { HttpAuth } from '../../../../core/services/http-auth';
 import { Property } from '../../../../core/interfaces/property';
 
 @Component({
   selector: 'app-property-form',
   standalone: true,
-  imports: [ReactiveFormsModule], // Necesario para que funcione tu [formGroup] en el HTML
+  imports: [ReactiveFormsModule],
   templateUrl: './property-form.html',
   styleUrl: './property-form.css'
 })
@@ -17,31 +17,42 @@ export class PropertyForm implements OnInit {
   pageTitle: string = 'Nueva Propiedad';
   isEditMode: boolean = false;
   serverError: string = '';
-  currentOwnerId: string = ''; // Aquí guardaremos el ID del usuario logueado
+  currentOwnerId: string = '';
+  
+  // Nueva variable para guardar el ID de la propiedad que estamos editando
+  propertyIdToEdit: string | null = null; 
 
   constructor(
     private fb: FormBuilder,
     private httpProperties: HttpProperties,
     private httpAuth: HttpAuth,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute // El "lector" de URLs de Angular
   ) {}
 
   ngOnInit(): void {
-    // 1. Obtenemos el ID del usuario logueado (Él será el 'owner')
+    // 1. Iniciamos el formulario vacío por defecto
+    this.initForm();
+
+    // 2. Obtenemos el dueño actual
     this.httpAuth.currentUser$.subscribe(user => {
       if (user && user._id) {
         this.currentOwnerId = user._id;
       }
     });
 
-    // 2. Inicializamos el formulario con los campos planos de tu HTML
-    this.initForm();
-
-    // (Más adelante aquí agregaremos la lógica para el modo Edición)
+    // 3. Revisamos la URL para saber si estamos en MODO EDICIÓN
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.isEditMode = true;
+        this.propertyIdToEdit = id;
+        this.pageTitle = 'Editar Propiedad'; // Cambiamos el título visual
+        this.loadPropertyData(id); // Traemos los datos del backend
+      }
+    });
   }
 
-  // --- CONFIGURACIÓN DEL FORMULARIO ---
   initForm(): void {
     this.formData = this.fb.group({
       // Info Básica
@@ -73,6 +84,42 @@ export class PropertyForm implements OnInit {
     });
   }
 
+  // --- NUEVO MÉTODO: CARGAR DATOS PARA EDITAR ---
+  loadPropertyData(id: string): void {
+    this.httpProperties.getPropertyById(id).subscribe({
+      next: (property: any) => {
+        // Red de seguridad por si el backend devuelve { realStateFound: {...} } o el objeto directo
+        const data = property.realStateFound ? property.realStateFound : property;
+
+        // MAGIA: patchValue llena automáticamente los inputs de tu HTML
+        this.formData.patchValue({
+          nameProperty: data.nameProperty,
+          description: data.description,
+          propertyType: data.propertyType,
+          maxGuests: data.maxGuests,
+          bedrooms: data.bedrooms,
+          beds: data.beds,
+          bathrooms: data.bathrooms,
+          // Desempaquetamos los objetos anidados para los inputs planos
+          state: data.location?.state,
+          city: data.location?.city,
+          address: data.location?.address,
+          reference: data.location?.reference,
+          pricePerNight: data.pricing?.pricePerNight,
+          currency: data.pricing?.currency,
+          cleaningFee: data.pricing?.cleaningFee,
+          minimumNights: data.pricing?.minimumNights,
+          houseRules: data.houseRules,
+          isPublished: data.isPublished
+        });
+      },
+      error: (err) => {
+        console.error('Error al cargar la propiedad:', err);
+        this.serverError = 'No se pudo cargar la información de la propiedad.';
+      }
+    });
+  }
+
   // --- ENVÍO AL BACKEND ---
   onSubmit(): void {
     if (this.formData.invalid) {
@@ -84,9 +131,9 @@ export class PropertyForm implements OnInit {
     this.serverError = '';
     const formValues = this.formData.value;
 
-    // 3. EL TRUCO DE MAGIA: Transformamos los datos planos al formato anidado de tu Backend
-    const newProperty: Property = {
-      owner: this.currentOwnerId, // Asignamos el dueño automáticamente
+    // Armamos la propiedad como lo pide el backend
+    const propertyData: Property = {
+      owner: this.currentOwnerId,
       nameProperty: formValues.nameProperty,
       description: formValues.description,
       propertyType: formValues.propertyType,
@@ -103,15 +150,12 @@ export class PropertyForm implements OnInit {
         reference: formValues.reference,
         coordinates: { lat: 0, lng: 0 } // Coordenadas por defecto por ahora
       },
-      
-      // Armamos el objeto Pricing
       pricing: {
         pricePerNight: Number(formValues.pricePerNight),
         currency: formValues.currency,
         cleaningFee: Number(formValues.cleaningFee),
         minimumNights: Number(formValues.minimumNights)
       },
-
       houseRules: formValues.houseRules,
       isPublished: formValues.isPublished,
       isActive: true, // Activa por defecto al crear
@@ -124,25 +168,40 @@ export class PropertyForm implements OnInit {
         url: 'https://via.placeholder.com/800x600?text=Foto+de+la+Propiedad', 
         description: 'Foto principal' 
       }],
-      
-      // Fechas requeridas por la interfaz (El backend las sobreescribirá)
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
-    // 5. Enviamos la propiedad construida al servicio HTTP
-    console.log('Enviando propiedad al backend:', newProperty);
-    
-    this.httpProperties.createProperty(newProperty).subscribe({
-      next: (response) => {
-        console.log('¡Propiedad creada con éxito!', response);
-        alert('¡Propiedad creada correctamente!');
-        this.router.navigate(['/dashboard/property/list']); // Redirigimos a la tabla
-      },
-      error: (err) => {
-        console.error('Error del backend:', err);
-        this.serverError = 'Ocurrió un error al guardar. Revisa la consola para más detalles.';
-      }
-    });
+    // DECISIÓN: ¿Actualizamos o Creamos?
+    if (this.isEditMode && this.propertyIdToEdit) {
+      
+      // Si estamos editando, le pegamos el ID a la propiedad para que el backend sepa a quién actualizar
+      propertyData._id = this.propertyIdToEdit;
+      
+      this.httpProperties.updateProperty(propertyData).subscribe({
+        next: () => {
+          alert('¡Propiedad actualizada correctamente!');
+          this.router.navigate(['/dashboard/property/list']);
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.serverError = 'Error al actualizar la propiedad.';
+        }
+      });
+
+    } else {
+      
+      // Mismo código de creación que ya teníamos
+      this.httpProperties.createProperty(propertyData).subscribe({
+        next: () => {
+          alert('¡Propiedad creada correctamente!');
+          this.router.navigate(['/dashboard/property/list']);
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.serverError = 'Error al guardar la propiedad.';
+        }
+      });
+    }
   }
 }

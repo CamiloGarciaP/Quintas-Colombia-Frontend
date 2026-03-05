@@ -38,12 +38,6 @@ const MENU_ITEMS: MenuItem[] = [
     route: 'property/new',
     icon: '',
     roles: ['Admin', 'Propietario']
-  },
-  {
-    title: 'Editar propiedad',
-    route: 'property/edit/:id',
-    icon: '',
-    roles: ['Admin', 'Propietario']
   }
 ];
 @Component({

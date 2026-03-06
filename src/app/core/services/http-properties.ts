@@ -26,12 +26,12 @@ export class HttpProperties {
         return this.http.get<Property>(`${this.apiUrl}/${id}`, { headers: this.headers });
     }
     
-    createProperty(property: Property): Observable<Property> {
-        return this.http.post<Property>(this.apiUrl, property, { headers: this.headers });
+    createProperty(propertyData: FormData): Observable<any> {
+        return this.http.post<any>(this.apiUrl, propertyData, { headers: this.headers });
     }
 
-    updateProperty(property: Property): Observable<Property> {
-        return this.http.put<Property>(`${this.apiUrl}/${property._id}`, property, { headers: this.headers });
+    updateProperty(id: string, propertyData: FormData): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/${id}`, propertyData, { headers: this.headers });
     }
 
     deleteProperty(id: string): Observable<void> {

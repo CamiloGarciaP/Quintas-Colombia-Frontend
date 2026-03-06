@@ -74,6 +74,7 @@
 .section-group:nth-child(4) { grid-column: 1 / 2; } /* Precios -> Izquierda */
 .section-group:nth-child(5) { grid-column: 2 / 3; } /* Reglas -> Derecha */
 .section-group:nth-child(6) { grid-column: 2 / 3; } /* Estado -> Derecha */
+.section-group:nth-child(7) { grid-column: 1 / -1; } /* Imágenes -> Completa */
 
 /* ---------- TARJETAS DE SECCIÓN ---------- */
 .section-group {

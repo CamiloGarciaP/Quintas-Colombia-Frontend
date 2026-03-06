@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpProperties } from '../../../../core/services/http-properties';
 import { HttpAuth } from '../../../../core/services/http-auth';
-import { Property } from '../../../../core/interfaces/property';
+// Nota: Ya no importamos la interfaz Property aquí porque enviaremos un FormData
 
 @Component({
   selector: 'app-property-form',
@@ -19,79 +19,66 @@ export class PropertyForm implements OnInit {
   serverError: string = '';
   currentOwnerId: string = '';
   
-  // Nueva variable para guardar el ID de la propiedad que estamos editando
   propertyIdToEdit: string | null = null; 
+
+  // 👇 NUEVA CAJA PARA GUARDAR LAS FOTOS ANTES DE ENVIARLAS 👇
+  selectedFiles: File[] = []; 
 
   constructor(
     private fb: FormBuilder,
     private httpProperties: HttpProperties,
     private httpAuth: HttpAuth,
     private router: Router,
-    private route: ActivatedRoute // El "lector" de URLs de Angular
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    // 1. Iniciamos el formulario vacío por defecto
     this.initForm();
 
-    // 2. Obtenemos el dueño actual
     this.httpAuth.currentUser$.subscribe(user => {
       if (user && user._id) {
         this.currentOwnerId = user._id;
       }
     });
 
-    // 3. Revisamos la URL para saber si estamos en MODO EDICIÓN
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.isEditMode = true;
         this.propertyIdToEdit = id;
-        this.pageTitle = 'Editar Propiedad'; // Cambiamos el título visual
-        this.loadPropertyData(id); // Traemos los datos del backend
+        this.pageTitle = 'Editar Propiedad';
+        this.loadPropertyData(id);
       }
     });
   }
 
   initForm(): void {
     this.formData = this.fb.group({
-      // Info Básica
       nameProperty: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.required],
       propertyType: ['', Validators.required],
-      
-      // Capacidad (Recuerda que los pusimos en null para que se vea el placeholder)
       maxGuests: [null, Validators.required],
       bedrooms: [null, Validators.required],
       beds: [null, Validators.required],
       bathrooms: [null, Validators.required],
-
-      // Ubicación
       state: ['', Validators.required],
       city: ['', Validators.required],
       address: ['', Validators.required],
       reference: [''],
-
-      // Precios
       pricePerNight: [null, Validators.required],
       currency: ['COP', Validators.required],
       cleaningFee: [0],
       minimumNights: [1],
-
-      // Reglas y Estado
       houseRules: [''],
       isPublished: [false]
     });
   }
 
-  // --- NUEVO MÉTODO: CARGAR DATOS PARA EDITAR ---
   loadPropertyData(id: string): void {
     this.httpProperties.getPropertyById(id).subscribe({
       next: (property: any) => {
-        // Red de seguridad por si el backend devuelve { realStateFound: {...} } o el objeto directo
         const data = property.realStateFound ? property.realStateFound : property;
 
-        // MAGIA: patchValue llena automáticamente los inputs de tu HTML
         this.formData.patchValue({
           nameProperty: data.nameProperty,
           description: data.description,
@@ -100,7 +87,6 @@ export class PropertyForm implements OnInit {
           bedrooms: data.bedrooms,
           beds: data.beds,
           bathrooms: data.bathrooms,
-          // Desempaquetamos los objetos anidados para los inputs planos
           state: data.location?.state,
           city: data.location?.city,
           address: data.location?.address,
@@ -120,10 +106,19 @@ export class PropertyForm implements OnInit {
     });
   }
 
-  // --- ENVÍO AL BACKEND ---
+  // 👇 NUEVA FUNCIÓN PARA ATRAPAR LAS FOTOS DEL HTML 👇
+  onFileSelected(event: any): void {
+    const files: FileList = event.target.files;
+    if (files) {
+      // Convertimos la lista y limitamos a 10 fotos máximo
+      this.selectedFiles = Array.from(files).slice(0, 10);
+    }
+  }
+
+  // 👇 EL NUEVO ONSUBMIT CON FORMDATA 👇
   onSubmit(): void {
     if (this.formData.invalid) {
-      this.formData.markAllAsTouched(); // Muestra los mensajes de error en rojo
+      this.formData.markAllAsTouched();
       this.serverError = 'Por favor, completa todos los campos obligatorios.';
       return;
     }
@@ -131,56 +126,54 @@ export class PropertyForm implements OnInit {
     this.serverError = '';
     const formValues = this.formData.value;
 
-    // Armamos la propiedad como lo pide el backend
-    const propertyData: Property = {
-      owner: this.currentOwnerId,
-      nameProperty: formValues.nameProperty,
-      description: formValues.description,
-      propertyType: formValues.propertyType,
-      maxGuests: Number(formValues.maxGuests),
-      bedrooms: Number(formValues.bedrooms),
-      beds: Number(formValues.beds),
-      bathrooms: Number(formValues.bathrooms),
-      
-      // Armamos el objeto Location
-      location: {
-        state: formValues.state,
-        city: formValues.city,
-        address: formValues.address,
-        reference: formValues.reference,
-        coordinates: { lat: 0, lng: 0 } // Coordenadas por defecto por ahora
-      },
-      pricing: {
-        pricePerNight: Number(formValues.pricePerNight),
-        currency: formValues.currency,
-        cleaningFee: Number(formValues.cleaningFee),
-        minimumNights: Number(formValues.minimumNights)
-      },
-      houseRules: formValues.houseRules,
-      isPublished: formValues.isPublished,
-      isActive: true, // Activa por defecto al crear
+    // 1. Creamos la "Maleta de viaje"
+    const submitData = new FormData();
 
-      // 4. DATOS TEMPORALES (Mocks) para pasar las validaciones del backend
-      // Como aún no tenemos input para subir imágenes ni seleccionar comodidades, 
-      // enviamos datos por defecto para que Mongoose no nos rechace la petición.
-      amenities: ['WiFi'], 
-      photos: [{ 
-        url: 'https://via.placeholder.com/800x600?text=Foto+de+la+Propiedad', 
-        description: 'Foto principal' 
-      }],
-      createdAt: new Date(),
-      updatedAt: new Date()
+    // 2. Empacamos los datos simples (textos y números convertidos a texto)
+    submitData.append('owner', this.currentOwnerId);
+    submitData.append('nameProperty', formValues.nameProperty);
+    submitData.append('description', formValues.description);
+    submitData.append('propertyType', formValues.propertyType);
+    submitData.append('maxGuests', formValues.maxGuests.toString());
+    submitData.append('bedrooms', formValues.bedrooms.toString());
+    submitData.append('beds', formValues.beds.toString());
+    submitData.append('bathrooms', formValues.bathrooms.toString());
+    submitData.append('houseRules', formValues.houseRules);
+    submitData.append('isPublished', formValues.isPublished);
+
+    // 3. Empacamos los objetos anidados convirtiéndolos en cadenas de texto JSON
+    const locationObj = {
+      state: formValues.state,
+      city: formValues.city,
+      address: formValues.address,
+      reference: formValues.reference,
+      coordinates: { lat: 0, lng: 0 }
     };
+    submitData.append('location', JSON.stringify(locationObj));
 
-    // DECISIÓN: ¿Actualizamos o Creamos?
+    const pricingObj = {
+      pricePerNight: formValues.pricePerNight,
+      currency: formValues.currency,
+      cleaningFee: formValues.cleaningFee,
+      minimumNights: formValues.minimumNights
+    };
+    submitData.append('pricing', JSON.stringify(pricingObj));
+
+    // Por ahora, enviamos comodidades por defecto
+    submitData.append('amenities', JSON.stringify(['WiFi']));
+
+    // 4. EMPACAMOS LAS FOTOS
+    // Tienen que llevar el nombre 'images' para que Multer las reconozca en el backend
+    this.selectedFiles.forEach((file) => {
+      submitData.append('images', file);
+    });
+
+    // 5. ENVIAMOS AL BACKEND
     if (this.isEditMode && this.propertyIdToEdit) {
       
-      // Si estamos editando, le pegamos el ID a la propiedad para que el backend sepa a quién actualizar
-      propertyData._id = this.propertyIdToEdit;
-      
-      this.httpProperties.updateProperty(propertyData).subscribe({
+      this.httpProperties.updateProperty(this.propertyIdToEdit, submitData).subscribe({
         next: () => {
-          alert('¡Propiedad actualizada correctamente!');
+          alert('¡Propiedad actualizada correctamente con sus fotos!');
           this.router.navigate(['/dashboard/property/list']);
         },
         error: (error: any) => {
@@ -191,10 +184,9 @@ export class PropertyForm implements OnInit {
 
     } else {
       
-      // Mismo código de creación que ya teníamos
-      this.httpProperties.createProperty(propertyData).subscribe({
+      this.httpProperties.createProperty(submitData).subscribe({
         next: () => {
-          alert('¡Propiedad creada correctamente!');
+          alert('¡Propiedad creada correctamente con sus fotos!');
           this.router.navigate(['/dashboard/property/list']);
         },
         error: (error: any) => {

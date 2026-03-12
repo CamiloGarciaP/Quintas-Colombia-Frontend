@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { HttpProperties } from '../../../core/services/http-properties'; 
 import { Property } from '../../../core/interfaces/property'; 
 
@@ -21,6 +21,8 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
     // Al iniciar la página, disparamos la petición al servidor
-    this.properties$ = this.httpProperties.getProperties();
+    this.properties$ = this.httpProperties.getProperties().pipe(
+      map((respuesta: any) => respuesta.realStates.slice(0, 3))
+    );
   }
 }

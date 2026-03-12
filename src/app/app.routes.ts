@@ -12,6 +12,7 @@ import { RequestListComponent } from './features/pages/role-requests/request-lis
 import { PropertyList } from './features/pages/properties/property-list/property-list';
 import { PropertyForm } from './features/pages/properties/property-form/property-form';
 import { PublicPropertyList } from './features/pages/properties/public-property-list/public-property-list';
+import { PropertyDetail } from './features/pages/properties/property-detail/property-detail';
 
 import { Contact } from './features/pages/contact/contact';
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
     { path:'home', component: Home },
     { path:'properties', component: PublicPropertyList },
     { path:'contact', component: Contact },
+    { path:'property/:id', component: PropertyDetail },
     { path:'login', component:Login,canActivate: [publicGuard] },
     { path:'register', component:Register, canActivate: [publicGuard] },
     { path:'404', component:Error },

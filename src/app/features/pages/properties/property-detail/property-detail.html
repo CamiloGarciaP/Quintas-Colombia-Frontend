@@ -1,0 +1,65 @@
+@if (propertyData$ | async; as propertyData) {
+    <div class="property-detail-container">
+        
+        <header class="property-header">
+            <h1>{{ propertyData.nameProperty }}</h1>
+            <p class="location">
+                <i class="fa-solid fa-location-dot"></i> {{ propertyData.location.city }}, {{ propertyData.location.state }}
+            </p>
+        </header>
+
+        <section class="gallery">
+            @if (propertyData.photos && propertyData.photos.length > 0) {
+                <img [src]="propertyData.photos[0].url" [alt]="propertyData.nameProperty" class="main-photo">
+            } @else {
+                <img src="/assets/images/placeholder.png" alt="Sin imagen" class="main-photo">
+            }
+        </section>
+
+        <div class="property-content">
+            
+            <div class="details">
+                <h2>Acerca de esta propiedad</h2>
+                <p class="description">
+                    {{ propertyData.description || 'Una hermosa propiedad lista para brindarte la mejor experiencia de descanso y confort. Escápate de la rutina y disfruta de instalaciones de primer nivel, espacios amplios y una ubicación privilegiada.' }}
+                </p>
+
+                <h3>Comodidades principales</h3>
+                <ul class="amenities">
+                    <li><i class="fa-solid fa-bed"></i> Habitaciones amplias</li>
+                    <li><i class="fa-solid fa-wifi"></i> Wi-Fi de alta velocidad</li>
+                    <li><i class="fa-solid fa-car"></i> Parqueadero privado</li>
+                    <li><i class="fa-solid fa-water-ladder"></i> Zona húmeda</li>
+                </ul>
+            </div>
+
+            <div class="booking-card">
+                <div class="price-header">
+                    <h3>{{ propertyData.pricing.pricePerNight | number }} {{ propertyData.pricing.currency }} <span>/ noche</span></h3>
+                </div>
+                
+                <div class="booking-form-placeholder">
+                    <p class="form-instruction">Selecciona tus fechas para iniciar la reserva.</p>
+                    
+                    <div class="dates">
+                        <div class="date-input">
+                            <label>Llegada</label>
+                            <input type="date" class="calendar-input">
+                        </div>
+                        <div class="date-input">
+                            <label>Salida</label>
+                            <input type="date" class="calendar-input">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-reserve">Continuar Reserva</button>
+            </div>
+
+        </div>
+    </div>
+} @else {
+    <div class="loading">
+        <h2>Preparando tu próximo destino...</h2>
+    </div>
+}

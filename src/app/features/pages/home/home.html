@@ -64,7 +64,7 @@
                                     {{ property.pricing.pricePerNight | number }} {{ property.pricing.currency }} / noche
                                 </p>
                                 
-                                <a routerLink="/property/{{ property._id }}" class="btn">RESERVAR</a>
+                                <a [routerLink]="['/property', property._id]" class="btn" style="position: relative; z-index: 100;">RESERVAR</a>
                             </div>
                         </article>
                     }

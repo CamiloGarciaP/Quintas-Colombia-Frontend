@@ -20,7 +20,7 @@
         <nav class="menu">
             <ul class="list">
                 <li>
-                    <a routerLink="/" routerLinkActive="active">Inicio</a>
+                    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
                 </li>
                 <li>
                     <a routerLink="/properties" routerLinkActive="active">Propiedades</a>
@@ -47,14 +47,14 @@
     <!-- Menú móvil desplegable -->
     <nav class="mobile-menu" [class.active]="isMenuOpen">
         <ul class="mobile-list">
-            <li>
-                <a routerLink="/" (click)="closeMenu()">Inicio</a>
+           <li>
+                <a routerLink="/" (click)="closeMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
             </li>
             <li>
-                <a routerLink="/properties" (click)="closeMenu()">Propiedades</a>
+                <a routerLink="/properties" (click)="closeMenu()" routerLinkActive="active">Propiedades</a>
             </li>
             <li>
-                <a routerLink="/contact" (click)="closeMenu()">Contacto</a>
+                <a routerLink="/contact" (click)="closeMenu()" routerLinkActive="active">Contacto</a>
             </li>
 
             @if( httpAuth.currentUser$ | async; as user ) {

@@ -13,16 +13,19 @@ import { PropertyList } from './features/pages/properties/property-list/property
 import { PropertyForm } from './features/pages/properties/property-form/property-form';
 import { PublicPropertyList } from './features/pages/properties/public-property-list/public-property-list';
 
+import { Contact } from './features/pages/contact/contact';
+
 import { authGuard } from './core/guards/auth-guard';
 import { publicGuard } from './core/guards/public-guard';
 import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
     { path:'home', component: Home },
-    { path: 'properties', component: PublicPropertyList },
+    { path:'properties', component: PublicPropertyList },
+    { path:'contact', component: Contact },
     { path:'login', component:Login,canActivate: [publicGuard] },
-    { path: 'register', component:Register, canActivate: [publicGuard] },
-    { path: '404', component:Error },
+    { path:'register', component:Register, canActivate: [publicGuard] },
+    { path:'404', component:Error },
 
 
     //NOTA: /dashboard es la ruta donde debe llegar cualquier usuario autenticado.

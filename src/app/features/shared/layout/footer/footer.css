@@ -11,29 +11,35 @@
 }
 
 .footer-container {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
-    display: grid;
+    display: flex;
     grid-template-columns: 1fr 2fr 1fr auto;
-    gap: 3rem;
+    gap: 3.5rem;
     align-items: center;
+    justify-items: center;
+    justify-content: space-around;
+    align-content: space-around;
     color: #d4a373;
 }
 
 .brand {
-    width: 10rem;
+    width: 15rem;
 }
 
 .footer-info h3,
 .footer-categories h3 {
     margin-bottom: 0.8rem;
     font-weight: 600;
+    font-size: 2.5rem;
+    font-family: var(--font-primary);
 }
 
 .footer-info p {
     max-width: 420px;
-    font-size: 0.95rem;
+    font-size: 1.5rem;
     line-height: 1.5;
+    font-family: var(--font-primary);
 }
 
 /* Categorías */
@@ -41,6 +47,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    font-size: 1.2rem;
 }
 
 .footer-categories li {
@@ -60,7 +67,7 @@
 }
 
 .footer-social img {
-    width: 24px;
-    height: 24px;
+    width: 3rem;
+    height: 3rem;
     filter: brightness(0) saturate(100%) invert(71%) sepia(32%) saturate(497%) hue-rotate(344deg) brightness(89%) contrast(86%);
 }

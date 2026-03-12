@@ -1,0 +1,37 @@
+<div class="properties-page-container">
+    <div class="page-header">
+        <h1>Nuestras Propiedades</h1>
+        <p>Encuentra el lugar perfecto para tu próximo descanso</p>
+    </div>
+
+    @if (properties$ | async; as properties) {
+        <section class="cards-grid">
+            
+            @for (property of properties; track property._id) {
+                <article class="card-main">
+                    
+                    @if (property.photos && property.photos.length > 0) {
+                        <img class="card-img" [src]="property.photos[0].url" [alt]="property.nameProperty">
+                    } @else {
+                        <img class="card-img" src="/assets/images/placeholder.png" alt="Sin imagen">
+                    }
+                    
+                    <div class="card-body">
+                        <h2>{{ property.nameProperty }}</h2>
+                        <p class="location">{{ property.location.city }}, {{ property.location.state }}</p>
+                        
+                        <p class="price">
+                            {{ property.pricing.pricePerNight | number }} {{ property.pricing.currency }} / noche
+                        </p>
+                        
+                        <a routerLink="/property/{{ property._id }}" class="btn">RESERVAR</a>
+                    </div>
+                </article>
+            }
+        </section>
+    } @else {
+        <div class="loading-state">
+            <p>Cargando increíbles destinos...</p>
+        </div>
+    }
+</div>

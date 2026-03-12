@@ -11,6 +11,7 @@ import { RequestListComponent } from './features/pages/role-requests/request-lis
 
 import { PropertyList } from './features/pages/properties/property-list/property-list';
 import { PropertyForm } from './features/pages/properties/property-form/property-form';
+import { PublicPropertyList } from './features/pages/properties/public-property-list/public-property-list';
 
 import { authGuard } from './core/guards/auth-guard';
 import { publicGuard } from './core/guards/public-guard';
@@ -18,6 +19,7 @@ import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
     { path:'home', component: Home },
+    { path: 'properties', component: PublicPropertyList },
     { path:'login', component:Login,canActivate: [publicGuard] },
     { path: 'register', component:Register, canActivate: [publicGuard] },
     { path: '404', component:Error },

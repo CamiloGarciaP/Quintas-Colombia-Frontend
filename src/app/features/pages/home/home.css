@@ -1,4 +1,4 @@
-/* ---------------HOME FULL BACKGROUND--------------- */
+/* HOME FULL BACKGROUND */
 :host {
     display: block;
     position: relative;
@@ -13,20 +13,24 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background-image: url("/assets/images/casa-fondo.png");
+    /* background-image: url("/assets/images/casa-fondo.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: -1;
+    z-index: -1;  */
 }
 
-/* ---------------HERO--------------- */
+/* HERO */
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: 2rem 4rem;
+    background-image: url("/assets/images/casa-fondo.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero-content {
@@ -36,7 +40,7 @@
 
 .hero-content h1 {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: 400;
     font-style: italic;
     line-height: 1.3;
@@ -45,7 +49,7 @@
 }
 
 .hero-content p {
-    font-size: 0.95rem;
+    font-size: 1.5rem;
     line-height: 1.6;
     margin-bottom: 2rem;
     color: rgba(255, 255, 255, 0.9);
@@ -64,7 +68,7 @@
     border-radius: 999px;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     border: 1.5px solid white;
     transition: all 0.3s ease;
 }
@@ -81,7 +85,7 @@
     border-radius: 999px;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     border: 1.5px solid white;
     transition: all 0.3s ease;
 }
@@ -89,4 +93,301 @@
 .btn-secondary:hover {
     background: white;
     color: #1a1a2e;
+}
+
+/* CONFORT TOTAL */
+.fincas-quintas-colombia {
+    padding-top: 5rem;
+}
+
+.fincas-quintas-colombia h1 {
+    text-align: center;
+    color: var(--gold);
+    font-size: 3.5rem;
+    font-family: var(--font-primary);
+}
+
+.cards-presentacion {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 4rem;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.body-presentacion {
+    padding: 3rem .7rem;
+    line-height: 2;
+    color: var(--white);
+    z-index: 1;
+}
+
+h2.penthouse-title {
+    color: var(--gold);
+    font-size: 3.5rem;
+}
+
+.penthouse-parrafo {
+    font-size: 1.5rem;
+    font-family: var(--font-primary);
+}
+
+.list-penthouse {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: 1rem 0;
+}
+
+.list-penthouse li {
+    flex: 1 0 33%;
+    font-size: 1.5rem;
+}
+
+.list-penthouse .fa-solid {
+    color: var(--gold);
+}
+
+.penthouse-img {
+    border-style: none;
+    height: 40rem;
+    border-radius: 2rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* SECCIÓN: HACIENDAS DESTACADAS */
+.container-fincas {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+    padding: 3rem;
+}
+
+.card-title {
+    text-align: center;
+    margin-bottom: 5rem;
+    width: 100%;
+}
+
+.card-title h2 {
+    font-family: var(--font-primary);
+    font-size: 4rem;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    letter-spacing: 1.5px;
+}
+
+.card-title p {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    color: var(--white);
+    max-width: 60rem;
+    letter-spacing: 1px;
+    margin: 0 auto;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.card-main {
+    display: flex;
+    background-color: var(--white);
+    flex-direction: column;
+    border-radius: 1.3rem;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.card-main:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+.card-img {
+    width: 100%;
+    height: 30rem;
+    object-fit: cover;
+    display: block;
+}
+
+.card-body {
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    gap: 1rem;
+}
+
+.card-body h2 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: var(--black);
+    font-family: var(--font-primary);
+}
+
+.card-body p {
+    font-family: var(--font-secondary);
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: var(--gray);
+}
+
+.btn {
+    display: inline-block;
+    background-color: var(--gold);
+    color: var(--black);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background-color: #e6c245;
+    transform: scale(1.05);
+}
+
+/* SECCIÓN: CARRUSEL INFINITO */
+.carrusel {
+    margin: 5rem auto 10rem auto;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    height: 60rem;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+}
+
+.carrusel::-webkit-scrollbar {
+    display: none;
+}
+
+.grupo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    animation: spin 35s infinite linear;
+    padding-right: 1em;
+}
+
+.card-carrusel {
+    flex: 0 0 auto;
+    width: 45rem;
+    height: 100%;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    scroll-snap-align: center;
+    position: relative;
+}
+
+.card-carrusel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.card-carrusel:hover img {
+    transform: scale(1.05);
+}
+
+.info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    background: rgba(149, 92, 48, 0.5); /* Ajustado para mejor legibilidad */
+    display: block;
+    width: 100%;
+    padding: 1.5rem;
+    margin: 1rem;
+    height: auto;
+    min-height: 12rem;
+    border-radius: 1rem;
+    max-width: calc(100% - 2rem);
+    color: var(--white);
+    backdrop-filter: blur(5px);
+}
+
+.carrusel h3 {
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    font-family: var(--font-primary);
+}
+
+.carrusel p {
+    font-size: 1.5rem;
+    font-family: var(--font-secondary);
+}
+
+@keyframes spin {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+/* MEDIA QUERIES */
+@media (width > 567px) {
+    .cards-presentacion {
+        flex-direction: row;
+        position: relative;
+    }
+    .body-presentacion {
+        background: rgba(149, 92, 48, 0.4);
+        height: auto;
+        min-height: 38rem;
+        border-radius: 1.5rem;
+        position: absolute;
+        bottom: 5rem;
+        max-width: 100%;
+        width: 80%;
+        padding: 3rem;
+    }
+    .list-penthouse .fa-solid {
+        color: var(--white); /* Contraste mejorado */
+    }
+    .penthouse-img {
+        height: 55rem;
+    }
+}
+
+@media (width > 768px) {
+    .body-presentacion {
+        min-height: 34rem;
+        bottom: 7rem;
+        z-index: 1;
+    }
+}
+
+@media (width > 1024px) {
+    .body-presentacion {
+        width: 65%;
+    }
+}
+
+@media (width > 1200px) {
+    .body-presentacion {
+        width: 55%;
+    }
+}
+
+@media (width > 1400px) {
+    .body-presentacion {
+        width: 40%;
+    }
 }

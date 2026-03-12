@@ -7,8 +7,148 @@
     </p>
 
     <div class="hero-actions">
-      <a routerLink="/properties" class="btn-primary">Explorar</a>
+      <a routerLink="/dashboard/property/list" class="btn-primary">Explorar</a>
       <a routerLink="/contact" class="btn-secondary">Consultar</a>
     </div>
   </div>
 </section>
+
+<main class="main">
+    
+    <section class="fincas-quintas-colombia">
+        <div class="container-presentacion">
+            <div class="presentacion-titulo">
+                <h1>Confort Total</h1>
+            </div>
+            <section class="cards-presentacion">
+                <div class="body-presentacion">
+                    <h2 class="penthouse-title">Penthouse en Santa Marta</h2>
+                    <p class="penthouse-parrafo">Disfruta de la vista que ofrece este apartamento a las playas de Santa Marta.<br> En este Club House viviras los mejores momentos! </p>
+                    <ul class="list-penthouse">
+                        <li><i class="fa-solid fa-bed"></i> 3 Habs. </li>
+                        <li><i class="fa-solid fa-panorama"></i> Terraza 360° </li>
+                        <li><i class="fa-solid fa-umbrella-beach"></i> Beach Club </li>
+                        <li><i class="fa-solid fa-plate-wheat"></i> Zona gastronómica </li>
+                        <li><i class="fa-solid fa-person-swimming"></i> Piscina privada </li>
+                    </ul>
+                </div>
+                <article class="presentacion-1">
+                    <img class="penthouse-img" src="/assets/images/Apto-003.png" alt="PentHouse con vista al mar">
+                </article>
+            </section>
+        </div>
+
+        <div class="container-fincas">
+            <div class="card-title">
+                <h2>Haciendas Destacadas</h2>
+                <p>Las propiedades mejor valoradas por nuestros clientes</p>
+            </div>
+            
+            @if (properties$ | async; as properties) {
+                <section class="cards">
+                    
+                    @for (property of properties; track property._id) {
+                        <article class="card-main">
+                            
+                            @if (property.photos && property.photos.length > 0) {
+                                <img class="card-img" [src]="property.photos[0].url" [alt]="property.nameProperty">
+                            } @else {
+                                <img class="card-img" src="/assets/images/placeholder.png" alt="Sin imagen">
+                            }
+                            
+                            <div class="card-body">
+                                <h2>{{ property.nameProperty }}</h2>
+                                <p>{{ property.location.city }}, {{ property.location.state }}</p>
+                                
+                                <p style="font-weight: bold; font-family: var(--font-secondary); margin-bottom: 1rem;">
+                                    {{ property.pricing.pricePerNight | number }} {{ property.pricing.currency }} / noche
+                                </p>
+                                
+                                <a routerLink="/property/{{ property._id }}" class="btn">RESERVAR</a>
+                            </div>
+                        </article>
+                    }
+
+                </section>
+            }
+        </div>
+
+        <div class="carrusel">
+            <div class="grupo">
+                <div class="card-carrusel card-carrusel-001">
+                    <img src="/assets/images/Apto-001.png" alt="Apto-001">
+                    <div class="info">
+                        <h3>Apartamento en Tocaima</h3>
+                        <p>Disfruta de espacios amplios, vistas únicas.<br>Apartamento moderno con todo lo necesario para que disfrutes de tus vacaciones. </p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-003">
+                    <img src="/assets/images/Apto-004.png" alt="Apto-004">
+                    <div class="info">
+                        <h3>Espacios VIP</h3>
+                        <p>Espacios a la altura de nuestros invitados.<br>Lujo en cada uno de los detalles</p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-002">
+                    <img src="/assets/images/Apto-002.png" alt="Apto-002">
+                    <div class="info">
+                        <h3>Apartamento en Villa de Leiva</h3>
+                        <p>Apartamento de estilo tradicional.<br>Chimenea en el area social del apartamento para crear historias únicas con los que quieres.</p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-004">
+                    <img src="/assets/images/Apto-005.png" alt="Apto-005">
+                    <div class="info">
+                        <h3>Vistas perfectas</h3>
+                        <p>Goza en cada uno de nuestro lugares con terrazas amplias.<br>Con vistas a los lugares más bellos.</p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-005">
+                    <img src="/assets/images/Apto-006.png" alt="Apto-006">
+                    <div class="info">
+                        <h3>Area Social</h3>
+                        <p>Cada uno de nuestros inmuebles cuenta<br>con espacios de entretenimiento y socialización.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div aria-hidden="true" class="grupo">
+                <div class="card-carrusel card-carrusel-001">
+                    <img src="/assets/images/Apto-001.png" alt="Apto-001">
+                    <div class="info">
+                        <h3>Apartamento en Tocaima</h3>
+                        <p>Disfruta de espacios amplios, vistas únicas.<br>Apartamento moderno con todo lo necesario para que disfrutes de tus vacaciones. </p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-003">
+                    <img src="/assets/images/Apto-004.png" alt="Apto-004">
+                    <div class="info">
+                        <h3>Espacios VIP</h3>
+                        <p>Espacios a la altura de nuestros invitados.<br>Lujo en cada uno de los detalles</p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-002">
+                    <img src="/assets/images/Apto-002.png" alt="Apto-002">
+                    <div class="info">
+                        <h3>Apartamento en Villa de Leiva</h3>
+                        <p>Apartamento de estilo tradicional.<br>Chimenea en el area social del apartamento para crear historias únicas con los que quieres.</p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-004">
+                    <img src="/assets/images/Apto-005.png" alt="Apto-005">
+                    <div class="info">
+                        <h3>Vistas perfectas</h3>
+                        <p>Goza en cada uno de nuestro lugares con terrazas amplias.<br>Con vistas a los lugares más bellos.</p>
+                    </div>
+                </div>
+                <div class="card-carrusel card-carrusel-005">
+                    <img src="/assets/images/Apto-006.png" alt="Apto-006">
+                    <div class="info">
+                        <h3>Area Social</h3>
+                        <p>Cada uno de nuestros inmuebles cuenta<br>con espacios de entretenimiento y socialización.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

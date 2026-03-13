@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpAuth } from '../../../core/services/http-auth';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -15,7 +15,9 @@ export class Login {
   public showPassword: boolean = false;
 
   constructor(
-    private httpAuth: HttpAuth
+    private httpAuth: HttpAuth,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.formData = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -33,6 +35,8 @@ export class Login {
       this.httpAuth.login(this.formData.value).subscribe({
         next: (data) => {
           console.log('Usuario Logueado', data);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+          this.router.navigateByUrl(returnUrl);
         },
         error: (error) => {
           console.log('Error al loguear el usuario', error);

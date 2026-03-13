@@ -38,22 +38,22 @@
                     <h3>{{ propertyData.pricing.pricePerNight | number }} {{ propertyData.pricing.currency }} <span>/ noche</span></h3>
                 </div>
                 
-                <div class="booking-form-placeholder">
+               <form [formGroup]="bookingForm" (ngSubmit)="continuarReserva()">
                     <p class="form-instruction">Selecciona tus fechas para iniciar la reserva.</p>
                     
                     <div class="dates">
                         <div class="date-input">
                             <label>Llegada</label>
-                            <input type="date" class="calendar-input">
+                            <input type="date" formControlName="llegada" class="calendar-input">
                         </div>
                         <div class="date-input">
                             <label>Salida</label>
-                            <input type="date" class="calendar-input">
+                            <input type="date" formControlName="salida" class="calendar-input">
                         </div>
                     </div>
-                </div>
 
-                <button class="btn-reserve">Continuar Reserva</button>
+    <button type="submit" class="btn-reserve">Continuar Reserva</button>
+</form>
             </div>
 
         </div>

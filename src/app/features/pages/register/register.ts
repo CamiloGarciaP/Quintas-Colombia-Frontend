@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpUsers } from '../../../core/services/user.service';
 // import { required } from '@angular/forms/signals';
 import { Subscription } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpAuth } from '../../../core/services/http-auth';
 
 @Component({
@@ -22,7 +22,8 @@ export class Register {
   constructor(
     private httpUsers: HttpUsers,
     private router: Router,
-    private httpAuth: HttpAuth
+    private httpAuth: HttpAuth,
+    private route: ActivatedRoute
   ) {
   //Definie la estructura del formulario
     this.formData = new FormGroup({
@@ -67,8 +68,14 @@ export class Register {
       subscribe ({
         next: (data) => {
           console.log('Usuario Creado', data)
-          // Voy a redireccionar al login
-          this.router.navigate(['/login'])
+          
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+          
+          if (returnUrl) {
+            this.router.navigate(['/login'], { queryParams: { returnUrl } });
+          } else {
+            this.router.navigate(['/login']);
+          }
         },
         error: (error) => {
           console.log('Error al crear el usuario', error)
